@@ -1,0 +1,36 @@
+{
+    `meta` => {
+        id = @topObjectId
+        type = "MyBigType"
+    }
+
+    // I am making a thing and this is a comment
+    someNumber = 123 =>
+    {
+        // type is inferred as int
+        fieldName = "Some field with spaces in the name"
+    }
+    
+    // Type is inferred as string
+    // meta:fieldName is inferred as "name"
+    name = "Example object of sorts"
+
+    someObj = {
+        Field1 = 1.0
+        Field2 = "asd"
+        Field3 = [
+            `meta` => {
+                type = "float"
+            }
+            1.0
+            2
+            4.0
+        ]
+        Parent = @topObjectId // Denotes an object reference, allowing reference
+                              // of recursive objects and minimization of file size
+    } => {
+        id
+        type = "MySmallerType"
+        fieldName = "SomeObject"
+    }
+}
