@@ -13,6 +13,7 @@ namespace DRON.Parse
         internal DronNode Parse(IEnumerable<Token> tokens)
         {
             _tokenEnumerator = tokens.GetEnumerator();
+            Chomp();
             return ParseNode();
         }
         #endregion
@@ -23,39 +24,73 @@ namespace DRON.Parse
 
         #region Members
         private Token _currentToken => _tokenEnumerator.Current;
+        private bool _isEOF
+            => TryMatch(TokenKind.EndOfFile);
         private IEnumerator<Token> _tokenEnumerator { get; set; }
         #endregion
 
         #region Member Methods
+        private void CheckUnexpectedEOF()
+        {
+            if (_isEOF)
+            {
+                throw new Exception("Unexpected EOF");
+            }
+        }
+
+        private bool Chomp()
+            => _tokenEnumerator.MoveNext();
+
         private DronNode ParseNode()
         {
             DronNode node = null;
-            var count = 0;
-            while (_tokenEnumerator.MoveNext())
+            switch (_currentToken.Kind)
             {
-                Console.Write($"{_currentToken.Kind} ");
-                switch (_currentToken)
-                {
-                    case NumberToken token:
-                        Console.WriteLine(token.Value);
-                        break;
-                    case ObjectRefIdentifierToken token:
-                        Console.WriteLine(token.Value);
-                        break;
-                    case QuotedIdentifierToken token:
-                        Console.WriteLine(token.Value);
-                        break;
-                    case IdentifierToken token:
-                        Console.WriteLine(token.Value);
-                        break;
-                    default:
-                        Console.WriteLine();
-                        break;
-                }
-                count++;
+                case TokenKind.OpenBrace:
+                    while (
+                        !_isEOF
+                        && !TryMatch(TokenKind.CloseBrace)
+                    )
+                    {
+                        Chomp();
+                    }
+                    CheckUnexpectedEOF();
+                    break;
+                case TokenKind.OpenBracket:
+                    while (
+                        !_isEOF
+                        && !TryMatch(TokenKind.CloseBracket)
+                    )
+                    {
+                        Chomp();
+                    }
+                    CheckUnexpectedEOF();
+                    break;
+                case TokenKind.OpenParenthese:
+                    while (
+                        !_isEOF
+                        && !TryMatch(TokenKind.CloseParenthese)
+                    )
+                    {
+                        Chomp();
+                    }
+                    CheckUnexpectedEOF();
+                    break;
             }
             return node;
         }
+
+        private bool TryChomp(TokenKind kind)
+        {
+            if (!TryMatch(kind))
+            {
+                return false;
+            }
+            return Chomp();
+        }
+
+        private bool TryMatch(TokenKind kind)
+            => _currentToken?.Kind == kind;
         #endregion
 
         #endregion
