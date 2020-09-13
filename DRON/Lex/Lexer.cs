@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.CompilerServices;
-using System.Text;
 using DRON.Tokens;
 
 namespace DRON.Lex
@@ -12,57 +11,46 @@ namespace DRON.Lex
     {
         #region Internal
 
-        #region Constructors
-        internal Lexer(string dronString)
-        {
-            _currentStreamValue = -1;
-            _stream = new MemoryStream(
-                Encoding.UTF8.GetBytes(dronString ?? "")
-            );
-        }
-
-        internal Lexer([NotNull] Stream stream)
+        #region Member Methods
+        internal IEnumerable<Token> Lex([NotNull] Stream stream)
         {
             if (stream is null)
             {
-                throw new System.ArgumentNullException("'stream' argument cannot be null");
-            }
-
-            _stream = stream;
-        }
-        #endregion
-
-        #region Member Methods
-        internal IEnumerable<Token> Lex()
-        {
-            if (_stream.Length == 0)
-            {
-                yield break;
+                throw new System.ArgumentNullException("'stream' cannot be null");
             }
             
+            _stream = stream;
+            _currentStreamValue = -1;
             _state = States.Start;
-            while (_currentToken?.Kind != TokenKind.EndOfFile)
+            using (_stream)
             {
-                yield return GetNextToken();
+                if (_stream.Length == 0)
+                {
+                    yield break;
+                }
+                while (_currentToken?.Kind != TokenKind.EndOfFile)
+                {
+                    yield return GetNextToken();
+                }
             }
         }
         #endregion
 
         #endregion
 
-        #region Protected
+        #region Private
 
         #region Members
-        protected int _currentStreamValue { get; set; }
-        protected Token _currentToken { get; set; }
-        protected string _tokenString { get; set; }
-        protected bool _preserveLastValue { get; set; }
-        protected Stream _stream { get; set; }
+        private int _currentStreamValue;
+        private Token _currentToken;
+        private string _tokenString;
+        private bool _preserveLastValue;
+        private Stream _stream;
         #endregion
 
         #region Member Methods
         [MethodImpl(MethodImplOptions.AggressiveOptimization)]
-        protected Token GetNextToken()
+        private Token GetNextToken()
         {
             if (_currentToken?.Kind == TokenKind.EndOfFile)
             {
@@ -244,7 +232,7 @@ namespace DRON.Lex
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected void SetTokenAndDone(Token token)
+        private void SetTokenAndDone(Token token)
         {
             _currentToken = token;
             _state = States.Done;   
@@ -256,17 +244,9 @@ namespace DRON.Lex
         #region Internal
 
         #region Members
-        internal States _state { get; set; }
+        internal States _state;
         #endregion
 
         #endregion
-
-        ~Lexer()
-        {
-            if (_stream is not null)
-            {
-                _stream.Dispose();
-            }
-        }
     }
 }

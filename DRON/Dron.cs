@@ -1,5 +1,8 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Text;
+using System.Threading.Tasks;
 using DRON.Lex;
 using DRON.Tokens;
 
@@ -10,45 +13,51 @@ namespace DRON
         #region Public
 
         #region Static Methods
-        public static void Parse(string dronString)
-            => Parse(new Lexer(dronString));
+        public static bool Parse([NotNull] string dronString)
+            => ParseAsync(dronString).Result;
+        
+        public async static Task<bool> ParseAsync([NotNull] string dronString)
+            => await ParseAsync(
+                new MemoryStream(
+                    Encoding.UTF8.GetBytes(dronString ?? "")
+                )
+            );
 
-        public static void Parse(Stream stream)
-            => Parse(new Lexer(stream));
-        #endregion
-
-        #endregion
-
-        #region Private
-
-        #region Static Methods
-        private static void Parse(Lexer lexer)
+        public static bool Parse([NotNull] Stream stream)
+            => ParseAsync(stream).Result;
+        
+        public async static Task<bool> ParseAsync([NotNull] Stream stream)
         {
-            var count = 0;
-            foreach (var token in lexer.Lex())
+            return await Task.Run<bool>(() =>
             {
-                Console.Write($"{token.Kind} ");
-                switch (token)
+                var lexer = new Lexer();
+                var count = 0;
+                foreach (var token in lexer.Lex(stream))
                 {
-                    case NumberToken t:
-                        Console.WriteLine(t.Value);
-                        break;
-                    case ObjectRefIdentifierToken t:
-                        Console.WriteLine(t.Value);
-                        break;
-                    case QuotedIdentifierToken t:
-                        Console.WriteLine(t.Value);
-                        break;
-                    case IdentifierToken t:
-                        Console.WriteLine(t.Value);
-                        break;
-                    default:
-                        Console.WriteLine();
-                        break;
+                    Console.Write($"{token.Kind} ");
+                    switch (token)
+                    {
+                        case NumberToken t:
+                            Console.WriteLine(t.Value);
+                            break;
+                        case ObjectRefIdentifierToken t:
+                            Console.WriteLine(t.Value);
+                            break;
+                        case QuotedIdentifierToken t:
+                            Console.WriteLine(t.Value);
+                            break;
+                        case IdentifierToken t:
+                            Console.WriteLine(t.Value);
+                            break;
+                        default:
+                            Console.WriteLine();
+                            break;
+                    }
+                    count++;
                 }
-                count++;
-            }
-            Console.WriteLine(count);
+                Console.WriteLine(count);
+                return true;
+            });
         }
         #endregion
 
