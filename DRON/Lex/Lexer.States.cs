@@ -1,6 +1,6 @@
-namespace DRON
+namespace DRON.Lex
 {
-    public partial class Lexer
+    internal partial class Lexer
     {
         #region Internal
 

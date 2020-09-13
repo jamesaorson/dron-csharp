@@ -1,11 +1,11 @@
 namespace DRON.Tokens
 {
-    public class CommaToken : Token
+    internal class CommaToken : Token
     {
         #region Public
 
         #region Constructors
-        public CommaToken()
+        internal CommaToken()
             : base (TokenKind.Comma) {}
         #endregion
 

@@ -1,11 +1,11 @@
 namespace DRON.Tokens
 {
-    public class ObjectRefIdentifierToken : Token
+    internal class ObjectRefIdentifierToken : Token
     {
         #region Public
 
         #region Constructors
-        public ObjectRefIdentifierToken(string value)
+        internal ObjectRefIdentifierToken(string value)
             : base (TokenKind.ObjectRefIdentifier)
         {
             Value = value;
@@ -13,7 +13,7 @@ namespace DRON.Tokens
         #endregion
 
         #region Members
-        public readonly string Value;
+        internal readonly string Value;
         #endregion
 
         #endregion

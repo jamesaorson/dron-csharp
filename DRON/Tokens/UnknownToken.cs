@@ -1,11 +1,11 @@
 namespace DRON.Tokens
 {
-    public class UnknownToken : Token
+    internal class UnknownToken : Token
     {
         #region Public
 
         #region Constructors
-        public UnknownToken()
+        internal UnknownToken()
             : base (TokenKind.Unknown) {}
         #endregion
 

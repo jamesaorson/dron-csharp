@@ -6,14 +6,14 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using DRON.Tokens;
 
-namespace DRON
+namespace DRON.Lex
 {
-    public partial class Lexer
+    internal partial class Lexer
     {
-        #region Public
+        #region Internal
 
         #region Constructors
-        public Lexer(string dronString)
+        internal Lexer(string dronString)
         {
             _currentStreamValue = -1;
             _stream = new MemoryStream(
@@ -21,7 +21,7 @@ namespace DRON
             );
         }
 
-        public Lexer([NotNull] Stream stream)
+        internal Lexer([NotNull] Stream stream)
         {
             if (stream is null)
             {
@@ -33,7 +33,7 @@ namespace DRON
         #endregion
 
         #region Member Methods
-        public IEnumerable<Token> Lex()
+        internal IEnumerable<Token> Lex()
         {
             if (_stream.Length == 0)
             {

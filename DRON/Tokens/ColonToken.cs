@@ -1,11 +1,11 @@
 namespace DRON.Tokens
 {
-    public class ColonToken : Token
+    internal class ColonToken : Token
     {
         #region Public
 
         #region Constructors
-        public ColonToken()
+        internal ColonToken()
             : base (TokenKind.Colon) {}
         #endregion
 

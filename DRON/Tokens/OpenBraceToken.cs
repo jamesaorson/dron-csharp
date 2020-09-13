@@ -1,11 +1,11 @@
 namespace DRON.Tokens
 {
-    public class OpenBraceToken : Token
+    internal class OpenBraceToken : Token
     {
         #region Public
 
         #region Constructors
-        public OpenBraceToken()
+        internal OpenBraceToken()
             : base (TokenKind.OpenBrace) {}
         #endregion
 

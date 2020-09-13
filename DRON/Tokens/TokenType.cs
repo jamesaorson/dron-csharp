@@ -1,6 +1,6 @@
 namespace DRON.Tokens
 {
-    public enum TokenKind
+    internal enum TokenKind
     {
         CloseBrace,
         CloseBracket,

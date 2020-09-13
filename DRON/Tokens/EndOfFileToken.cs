@@ -1,11 +1,11 @@
 namespace DRON.Tokens
 {
-    public class EndOfFileToken : Token
+    internal class EndOfFileToken : Token
     {
         #region Public
 
         #region Constructors
-        public EndOfFileToken()
+        internal EndOfFileToken()
             : base (TokenKind.EndOfFile) {}
         #endregion
 

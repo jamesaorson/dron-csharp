@@ -1,11 +1,11 @@
 namespace DRON.Tokens
 {
-    public class CloseParentheseToken : Token
+    internal class CloseParentheseToken : Token
     {
         #region Public
 
         #region Constructors
-        public CloseParentheseToken()
+        internal CloseParentheseToken()
             : base (TokenKind.CloseParenthese) {}
         #endregion
 

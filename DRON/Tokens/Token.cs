@@ -1,11 +1,11 @@
 namespace DRON.Tokens
 {
-    public abstract class Token
+    internal abstract class Token
     {
         #region Public
 
         #region Members
-        public readonly TokenKind Kind;
+        internal readonly TokenKind Kind;
         #endregion
 
         #endregion

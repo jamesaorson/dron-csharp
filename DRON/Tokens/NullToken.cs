@@ -1,11 +1,11 @@
 namespace DRON.Tokens
 {
-    public class NullToken : Token
+    internal class NullToken : Token
     {
         #region Public
 
         #region Constructors
-        public NullToken()
+        internal NullToken()
             : base (TokenKind.Null) {}
         #endregion
 

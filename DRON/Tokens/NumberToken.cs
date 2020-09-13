@@ -1,11 +1,11 @@
 namespace DRON.Tokens
 {
-    public class NumberToken : Token
+    internal class NumberToken : Token
     {
         #region Public
 
         #region Constructors
-        public NumberToken(string value)
+        internal NumberToken(string value)
             : base (TokenKind.Number)
         {
             Value = value;
@@ -13,9 +13,9 @@ namespace DRON.Tokens
         #endregion
 
         #region Members
-        public double? NumericValue
+        internal double? NumericValue
             => Value is null ? null : System.Convert.ToDouble(Value);
-        public readonly string Value;
+        internal readonly string Value;
         #endregion
 
         #endregion
