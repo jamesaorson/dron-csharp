@@ -1,10 +1,9 @@
-using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using DRON.Lex;
-using DRON.Tokens;
+using DRON.Parse;
 
 namespace DRON
 {
@@ -13,50 +12,26 @@ namespace DRON
         #region Public
 
         #region Static Methods
-        public static bool Parse([NotNull] string dronString)
+        public static DronObject Parse([NotNull] string dronString)
             => ParseAsync(dronString).Result;
         
-        public async static Task<bool> ParseAsync([NotNull] string dronString)
+        public async static Task<DronObject> ParseAsync([NotNull] string dronString)
             => await ParseAsync(
                 new MemoryStream(
                     Encoding.UTF8.GetBytes(dronString ?? "")
                 )
             );
 
-        public static bool Parse([NotNull] Stream stream)
+        public static DronObject Parse([NotNull] Stream stream)
             => ParseAsync(stream).Result;
         
-        public async static Task<bool> ParseAsync([NotNull] Stream stream)
+        public async static Task<DronObject> ParseAsync([NotNull] Stream stream)
         {
-            return await Task.Run<bool>(() =>
+            return await Task.Run(() =>
             {
                 var lexer = new Lexer();
-                var count = 0;
-                foreach (var token in lexer.Lex(stream))
-                {
-                    Console.Write($"{token.Kind} ");
-                    switch (token)
-                    {
-                        case NumberToken t:
-                            Console.WriteLine(t.Value);
-                            break;
-                        case ObjectRefIdentifierToken t:
-                            Console.WriteLine(t.Value);
-                            break;
-                        case QuotedIdentifierToken t:
-                            Console.WriteLine(t.Value);
-                            break;
-                        case IdentifierToken t:
-                            Console.WriteLine(t.Value);
-                            break;
-                        default:
-                            Console.WriteLine();
-                            break;
-                    }
-                    count++;
-                }
-                Console.WriteLine(count);
-                return true;
+                var parser = new Parser();
+                return parser.Parse(lexer.Lex(stream));
             });
         }
         #endregion
