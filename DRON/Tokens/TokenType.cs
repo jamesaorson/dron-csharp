@@ -2,21 +2,20 @@ namespace DRON.Tokens
 {
     public enum TokenKind
     {
-        AttributeIdentifier,
-        AttributeValue,
         CloseBrace,
         CloseBracket,
         CloseParenthese,
-        CloseQuote,
         Colon,
         Comma,
-        FieldName,
+        EndOfFile,
+        Identifier,
         Null,
         Number,
-        ObjectRefId,
+        ObjectRefIdentifier,
         OpenBrace,
         OpenBracket,
         OpenParenthese,
-        OpenQuote,
+        QuotedIdentifier,
+        Unknown,
     }
 }

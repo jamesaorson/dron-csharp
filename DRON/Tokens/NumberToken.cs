@@ -5,8 +5,11 @@ namespace DRON.Tokens
         #region Public
 
         #region Constructors
-        public NumberToken()
-            : base (TokenKind.Number) {}
+        public NumberToken(string value)
+            : base (TokenKind.Number)
+        {
+            Value = value;
+        }
         #endregion
 
         #region Members

@@ -1,12 +1,12 @@
 namespace DRON.Tokens
 {
-    public class OpenQuoteToken : Token
+    public class EndOfFileToken : Token
     {
         #region Public
 
         #region Constructors
-        public OpenQuoteToken()
-            : base (TokenKind.OpenQuote) {}
+        public EndOfFileToken()
+            : base (TokenKind.EndOfFile) {}
         #endregion
 
         #endregion

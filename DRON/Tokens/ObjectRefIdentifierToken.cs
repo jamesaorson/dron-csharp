@@ -1,12 +1,12 @@
 namespace DRON.Tokens
 {
-    public class AttributeValueToken : Token
+    public class ObjectRefIdentifierToken : Token
     {
         #region Public
 
         #region Constructors
-        public AttributeValueToken(string value)
-            : base (TokenKind.AttributeValue)
+        public ObjectRefIdentifierToken(string value)
+            : base (TokenKind.ObjectRefIdentifier)
         {
             Value = value;
         }

@@ -1,12 +1,12 @@
 namespace DRON.Tokens
 {
-    public class CloseQuoteToken : Token
+    public class UnknownToken : Token
     {
         #region Public
 
         #region Constructors
-        public CloseQuoteToken()
-            : base (TokenKind.CloseQuote) {}
+        public UnknownToken()
+            : base (TokenKind.Unknown) {}
         #endregion
 
         #endregion

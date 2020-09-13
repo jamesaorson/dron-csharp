@@ -1,9 +1,12 @@
 (Id topObjectId)
 (Type "MyBigType")
 {
+    // Type is inferred as int
     (FieldName "Some field name with spaces in it")
     someNumber: 123,
     
+    // Type is inferred as string
+    // Field name is inferred as "name"
     name: "Example object of sorts",
 
     (Type "MySmallerType")
@@ -17,8 +20,8 @@
             2,
             4.0,
         ],
+       // Denotes an object reference, allowing reference of recursive objects and file minimization
         (ObjectRef)
         Field3: @topObjectId,
-        Nullable: null,
     },
 }
