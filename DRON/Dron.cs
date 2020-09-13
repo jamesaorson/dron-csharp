@@ -12,20 +12,20 @@ namespace DRON
         #region Public
 
         #region Static Methods
-        public static DronObject Parse([NotNull] string dronString)
+        public static DronNode Parse([NotNull] string dronString)
             => ParseAsync(dronString).Result;
         
-        public async static Task<DronObject> ParseAsync([NotNull] string dronString)
+        public async static Task<DronNode> ParseAsync([NotNull] string dronString)
             => await ParseAsync(
                 new MemoryStream(
                     Encoding.UTF8.GetBytes(dronString ?? "")
                 )
             );
 
-        public static DronObject Parse([NotNull] Stream stream)
+        public static DronNode Parse([NotNull] Stream stream)
             => ParseAsync(stream).Result;
         
-        public async static Task<DronObject> ParseAsync([NotNull] Stream stream)
+        public async static Task<DronNode> ParseAsync([NotNull] Stream stream)
         {
             return await Task.Run(() =>
             {

@@ -10,35 +10,51 @@ namespace DRON.Parse
         #region Internal
 
         #region Member Methods
-        internal DronObject Parse(IEnumerable<Token> tokens)
+        internal DronNode Parse(IEnumerable<Token> tokens)
         {
-            DronObject ast = null;
+            _tokenEnumerator = tokens.GetEnumerator();
+            return ParseNode();
+        }
+        #endregion
+
+        #endregion
+
+        #region Private
+
+        #region Members
+        private Token _currentToken => _tokenEnumerator.Current;
+        private IEnumerator<Token> _tokenEnumerator { get; set; }
+        #endregion
+
+        #region Member Methods
+        private DronNode ParseNode()
+        {
+            DronNode node = null;
             var count = 0;
-            foreach (var token in tokens)
+            while (_tokenEnumerator.MoveNext())
             {
-                // Console.Write($"{token.Kind} ");
-                switch (token)
+                Console.Write($"{_currentToken.Kind} ");
+                switch (_currentToken)
                 {
-                    case NumberToken t:
-                        // Console.WriteLine(t.Value);
+                    case NumberToken token:
+                        Console.WriteLine(token.Value);
                         break;
-                    case ObjectRefIdentifierToken t:
-                        // Console.WriteLine(t.Value);
+                    case ObjectRefIdentifierToken token:
+                        Console.WriteLine(token.Value);
                         break;
-                    case QuotedIdentifierToken t:
-                        // Console.WriteLine(t.Value);
+                    case QuotedIdentifierToken token:
+                        Console.WriteLine(token.Value);
                         break;
-                    case IdentifierToken t:
-                        // Console.WriteLine(t.Value);
+                    case IdentifierToken token:
+                        Console.WriteLine(token.Value);
                         break;
                     default:
-                        // Console.WriteLine();
+                        Console.WriteLine();
                         break;
                 }
                 count++;
             }
-            // Console.WriteLine(count);
-            return ast;
+            return node;
         }
         #endregion
 
