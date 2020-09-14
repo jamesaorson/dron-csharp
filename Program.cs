@@ -19,19 +19,29 @@ public class Example
     public string Null { get; set; }
 }
 
+public class Record
+{
+    public Guid Id { get; set; }
+    public int Count { get; set; }
+    public string Name { get; set; }
+    public double Ratio { get; set; }
+    public bool IsValid { get; set; }
+    public double? SomethingNull { get; set; }
+}
+
 class Program
 {
     static void Main(string[] args)
     {
         Console.Write("Dron Sync:  "); Run();
-        Console.Write("Json Sync:  "); RunJson();
-        Console.WriteLine();
-        Console.Write("Dron Async: "); RunAsync();
-        Console.Write("Json Async: "); RunJsonAsync();
+        // Console.Write("Json Sync:  "); RunJson();
+        // Console.WriteLine();
+        // Console.Write("Dron Async: "); RunAsync();
+        // Console.Write("Json Async: "); RunJsonAsync();
     }
 
     private const int TIMES = 1_000;
-    private const string FILE_PREFIX = "example";
+    private const string FILE_PREFIX = "record";
     private const string DRON_FILE = FILE_PREFIX + ".dron";
     private const string JSON_FILE = FILE_PREFIX + ".json";
     private static void Run()
@@ -39,10 +49,10 @@ class Program
         var stopwatch = Stopwatch.StartNew();
         for (int i = 0; i < TIMES; ++i)
         {
-            var ast = DRON.Dron.Parse(
+            var record = DRON.Dron.Parse<Record>(
                 File.ReadAllText(DRON_FILE)
             );
-            // Console.WriteLine(nameof(ast));
+            Console.WriteLine(nameof(record));
         }
         stopwatch.Stop();
         Console.WriteLine(stopwatch.Elapsed);
@@ -67,7 +77,7 @@ class Program
         {
             tasks[i] = (
                 Task.Run(
-                    () => DRON.Dron.ParseAsync(
+                    () => DRON.Dron.ParseAsync<Record>(
                         File.OpenRead(DRON_FILE)
                     )
                 )
