@@ -13,10 +13,15 @@ namespace DRON.Serialization
             DronObject dronObject,
             PropertyInfo property = null,
             object obj = null,
-            Type _typeOverride = null
+            Type typeOverride = null
         )
         {
-            var deserializedObj = Deserializer.Deserialize(dronObject, property.PropertyType);
+            var propertyType = typeOverride ?? property?.PropertyType;
+            if (propertyType is null)
+            {
+                throw new Exception("Must provide type guidance to deserialize a DronObject");
+            }
+            var deserializedObj = Deserializer.Deserialize(dronObject, propertyType);
             if (obj is not null)
             {
                 property?.SetValue(obj, deserializedObj);

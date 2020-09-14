@@ -24,7 +24,7 @@ public class Record
     public Guid Id { get; set; }
     public int Count { get; set; }
     public string Name { get; set; }
-    public IDictionary<Guid, int> Objects { get; set; }
+    public IEnumerable<Record> Objects { get; set; }
     public double Ratio { get; set; }
     public bool IsValid { get; set; }
     public Record Child { get; set; }
@@ -35,10 +35,10 @@ class Program
     static void Main(string[] args)
     {
         Console.Write("Dron Sync:  "); Run();
-        // Console.Write("Json Sync:  "); RunJson();
-        // Console.WriteLine();
-        // Console.Write("Dron Async: "); RunAsync();
-        // Console.Write("Json Async: "); RunJsonAsync();
+        Console.Write("Json Sync:  "); RunJson();
+        Console.WriteLine();
+        Console.Write("Dron Async: "); RunAsync();
+        Console.Write("Json Async: "); RunJsonAsync();
     }
 
     private const int TIMES = 1_000;
@@ -53,7 +53,6 @@ class Program
             var record = DRON.Dron.Deserialize<Record>(
                 File.ReadAllText(DRON_FILE)
             );
-            Console.WriteLine(nameof(record));
         }
         stopwatch.Stop();
         Console.WriteLine(stopwatch.Elapsed);

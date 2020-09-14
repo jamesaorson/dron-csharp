@@ -74,8 +74,8 @@ namespace DRON.Serialization
             {
                 DronNumber dronNumber => _numberDeserializer.Deserialize(dronNumber, property, obj, typeOverride),
                 DronString dronString => _stringDeserializer.Deserialize(dronString, property, obj),
-                DronObject dronObject => _objectDeserializer.Deserialize(dronObject, property, obj),
-                DronList dronList => _listDeserializer.Deserialize(dronList, property, obj),
+                DronObject dronObject => _objectDeserializer.Deserialize(dronObject, property, obj, typeOverride),
+                DronList dronList => _listDeserializer.Deserialize(dronList, property, obj, typeOverride),
                 DronNull dronNull => _nullDeserializer.Deserialize(dronNull, property, obj),
                 DronBool dronBool => _boolDeserializer.Deserialize(dronBool, property, obj),
                 _ => throw new Exception($"Unsupported DronNode '{node.GetType().Name}'"),

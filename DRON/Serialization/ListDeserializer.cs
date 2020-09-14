@@ -16,22 +16,27 @@ namespace DRON.Serialization
             DronList dronList,
             PropertyInfo property = null,
             object obj = null,
-            Type _typeOverride = null
+            Type typeOverride = null
         )
         {
+            var propertyType = typeOverride ?? property.PropertyType;
+            if (property is null)
+            {
+                throw new Exception("Must provide type guidance to deserialize DronList");
+            }
             if (property is not null)
             {
-                switch (property.PropertyType)
+                switch (propertyType)
                 {
                     case Type type when (
                         type.IsGenericType
                         && type.GetGenericTypeDefinition() == typeof(IEnumerable<>)
                     ):
-                        return DeserializeDronListToList(dronList, property, obj);
+                        return DeserializeDronListToList(dronList, property, propertyType, obj);
                     case Type type when type.IsArray:
-                        return DeserializeDronListToArray(dronList, property, obj);
+                        return DeserializeDronListToArray(dronList, property, propertyType, obj);
                     default:
-                        throw new Exception($"Unsupported IEnumerable '{property.PropertyType.Name}'");
+                        throw new Exception($"Unsupported IEnumerable '{propertyType.Name}'");
                 }
             }
             return dronList.Items.Select(item => Deserializer.DeserializeNode(item));
@@ -45,10 +50,10 @@ namespace DRON.Serialization
         #region Member Methods
         private static IList ConvertDronListToList(
             DronList dronList,
-            PropertyInfo property
+            Type propertyType
         )
         {
-            var itemType = property.PropertyType.GenericTypeArguments.FirstOrDefault() ?? typeof(object);
+            var itemType = propertyType.GenericTypeArguments.FirstOrDefault() ?? typeof(object);
             var listType = typeof(List<>).MakeGenericType(new Type[] { itemType });
             var castItems = Activator.CreateInstance(listType) as IList;
             foreach (var item in dronList.Items)
@@ -63,13 +68,14 @@ namespace DRON.Serialization
         private static IEnumerable DeserializeDronListToList(
             DronList dronList,
             PropertyInfo property,
+            Type propertyType,
             object obj = null
         )
         {
-            var castItems = ConvertDronListToList(dronList, property);
+            var castItems = ConvertDronListToList(dronList, propertyType);
             if (obj is not null)
             {
-                property.SetValue(obj, castItems);
+                property?.SetValue(obj, castItems);
             }
             return castItems;
         }
@@ -77,16 +83,17 @@ namespace DRON.Serialization
         private static IEnumerable DeserializeDronListToArray(
             DronList dronList,
             PropertyInfo property,
+            Type propertyType,
             object obj = null
         )
         {
-            var itemType = property.PropertyType.GenericTypeArguments.FirstOrDefault() ?? typeof(object);
-            var castItems = ConvertDronListToList(dronList, property);
+            var itemType = propertyType.GenericTypeArguments.FirstOrDefault() ?? typeof(object);
+            var castItems = ConvertDronListToList(dronList, propertyType);
             var arr = Activator.CreateInstance(itemType.MakeArrayType(), castItems.Count) as Array;
             castItems.CopyTo(arr, 0);
             if (obj is not null)
             {
-                property.SetValue(obj, arr);
+                property?.SetValue(obj, arr);
             }
             return arr;
         }
