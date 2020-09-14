@@ -133,13 +133,20 @@ namespace DRON.Lex
                         {
                             var value = _tokenString.Trim();
                             Token token;
-                            if (value == "null")
+                            switch (value)
                             {
-                                token = new NullToken();
-                            }
-                            else
-                            {
-                                token = new IdentifierToken(value);
+                                case "null":
+                                   token = new NullToken();
+                                   break;
+                                case "true":
+                                   token = new TrueToken();
+                                   break;
+                                case "false":
+                                   token = new FalseToken();
+                                   break;
+                                default:
+                                    token = new IdentifierToken(value);
+                                    break;
                             }
                             SetTokenAndDone(token);
                             

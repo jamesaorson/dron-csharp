@@ -85,6 +85,12 @@ namespace DRON.Parse
                 _ => throw new UnexpectedTokenException(typeof(DronNode), _currentToken),
             };
         
+        private DronFalse ParseFalse()
+        {
+            Chomp();
+            return new DronFalse();
+        }
+        
         private DronField ParseField()
         {
             var attributes = ParseAttributes();
@@ -167,6 +173,8 @@ namespace DRON.Parse
                 TokenKind.QuotedIdentifier => ParseQuotedIdentifier(),
                 TokenKind.Number => ParseNumber(),
                 TokenKind.Null => ParseNull(),
+                TokenKind.True => ParseTrue(),
+                TokenKind.False => ParseFalse(),
                 _ => throw new UnexpectedTokenException(typeof(DronNode), _currentToken),
             };
         }
@@ -226,6 +234,12 @@ namespace DRON.Parse
             );
             Chomp();
             return quotedIdentifier;
+        }
+
+        private DronTrue ParseTrue()
+        {
+            Chomp();
+            return new DronTrue();
         }
 
         private bool TryChomp(TokenKind kind)

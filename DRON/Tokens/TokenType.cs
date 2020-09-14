@@ -8,6 +8,7 @@ namespace DRON.Tokens
         Colon,
         Comma,
         EndOfFile,
+        False,
         Identifier,
         Null,
         Number,
@@ -16,6 +17,7 @@ namespace DRON.Tokens
         OpenBracket,
         OpenParenthese,
         QuotedIdentifier,
+        True,
         Unknown,
     }
 }

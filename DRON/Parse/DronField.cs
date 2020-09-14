@@ -14,7 +14,7 @@ namespace DRON.Parse
         )
             : base(attributes)
         {
-            Name = name;
+            Name = name.Substring(1, name.Length - 2);
             Value = value;
         }
         #endregion
