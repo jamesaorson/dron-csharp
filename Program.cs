@@ -26,7 +26,7 @@ public class Record
     public string Name { get; set; }
     public double Ratio { get; set; }
     public bool IsValid { get; set; }
-    public double? SomethingNull { get; set; }
+    public Record Child { get; set; }
 }
 
 class Program
@@ -49,7 +49,7 @@ class Program
         var stopwatch = Stopwatch.StartNew();
         for (int i = 0; i < TIMES; ++i)
         {
-            var record = DRON.Dron.Parse<Record>(
+            var record = DRON.Dron.Deserialize<Record>(
                 File.ReadAllText(DRON_FILE)
             );
             Console.WriteLine(nameof(record));
@@ -77,7 +77,7 @@ class Program
         {
             tasks[i] = (
                 Task.Run(
-                    () => DRON.Dron.ParseAsync<Record>(
+                    () => DRON.Dron.DeserializeAsync<Record>(
                         File.OpenRead(DRON_FILE)
                     )
                 )
