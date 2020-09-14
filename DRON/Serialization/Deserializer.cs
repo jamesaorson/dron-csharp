@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Reflection;
 using DRON.Parse;
 
@@ -9,6 +11,7 @@ namespace DRON.Serialization
         static Deserializer()
         {
             _boolDeserializer = new BoolDeserializer();
+            _dictDeserializer = new DictDeserializer();
             _listDeserializer = new ListDeserializer();
             _nullDeserializer = new NullDeserializer();
             _numberDeserializer = new NumberDeserializer();
@@ -24,7 +27,11 @@ namespace DRON.Serialization
 
         internal static object Deserialize(DronNode node, Type returnType)
         {
-            var deserializedObj = Activator.CreateInstance(returnType);
+            if (returnType.IsGenericType && returnType.GetGenericTypeDefinition() == typeof(IDictionary<,>))
+            {
+                return _dictDeserializer.Deserialize(node as DronObject, typeOverride: returnType);
+            }
+            object deserializedObj = Activator.CreateInstance(returnType);
             if (node is DronObject obj)
             {
                 foreach (var pair in obj.Fields)
@@ -81,6 +88,7 @@ namespace DRON.Serialization
 
         #region Static Members
         private readonly static BoolDeserializer _boolDeserializer;
+        private readonly static DictDeserializer _dictDeserializer;
         private readonly static ListDeserializer _listDeserializer;
         private readonly static NullDeserializer _nullDeserializer;
         private readonly static NumberDeserializer _numberDeserializer;

@@ -16,21 +16,27 @@ namespace DRON.Serialization
             Type _typeOverride = null
         )
         {
-            dynamic value = node.Value;
             if (property is null)
             {
-                return value;
+                return node.Value;
             }
-            if (property.PropertyType == typeof(Guid))
-            {
-                value = new Guid(value);
-            }
+            var value = ConvertString(node.Value, property.PropertyType);
             if (obj is not null)
             {
                 property.SetValue(obj, value);
             }
             return value;
         }
+        #endregion
+
+        #region Static Methods
+        internal static object ConvertString(string value, Type stringType)
+            => Type.GetTypeCode(stringType) switch
+            {
+                TypeCode.String => value,
+                TypeCode.Object => new Guid(value), // Assume object is a Guid
+                _ => throw new Exception($"Unsupported string type '{stringType.Name}'"),
+            };
         #endregion
 
         #endregion

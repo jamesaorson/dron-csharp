@@ -21,54 +21,33 @@ namespace DRON.Serialization
             {
                 return node.Value;
             }
-            dynamic value;
-            switch (Type.GetTypeCode(propertyType))
-            {
-                case TypeCode.Byte:
-                    value = (byte)node.Value;
-                    break;
-                case TypeCode.SByte:
-                    value = (sbyte)node.Value;
-                    break;
-                case TypeCode.UInt16:
-                    value = (ushort)node.Value;
-                    break;
-                case TypeCode.Int16:
-                    value = (short)node.Value;
-                    break;
-                case TypeCode.UInt32:
-                    value = (uint)node.Value;
-                    break;
-                case TypeCode.Int32:
-                    value = (int)node.Value;
-                    break;
-                case TypeCode.UInt64:
-                    value = (ulong)node.Value;
-                    break;
-                case TypeCode.Int64:
-                    value = (long)node.Value;
-                    break;
-                case TypeCode.Single:
-                    value = (float)node.Value;
-                    break;
-                case TypeCode.Double:
-                    value = (double)node.Value;
-                    break;
-                case TypeCode.Decimal:
-                    value = (decimal)node.Value;
-                    break;
-                case TypeCode.Object:
-                    value = node.Value;
-                    break;
-                default:
-                    throw new Exception($"Unsupported numeric type '{property.PropertyType.Name}");
-            }
+            var value = ConvertNumber(node.Value, propertyType);
             if (obj is not null)
             {
                 property?.SetValue(obj, value);
             }
             return value;
         }
+        #endregion
+
+        #region Static Methods
+        internal static object ConvertNumber(object number, Type numberType)
+            => (Type.GetTypeCode(numberType)) switch
+            {
+                TypeCode.Byte => Convert.ToByte(number),
+                TypeCode.SByte => Convert.ToSByte(number),
+                TypeCode.UInt16 => Convert.ToUInt16(number),
+                TypeCode.Int16 => Convert.ToInt16(number),
+                TypeCode.UInt32 => Convert.ToUInt32(number),
+                TypeCode.Int32 => Convert.ToInt32(number),
+                TypeCode.UInt64 => Convert.ToUInt64(number),
+                TypeCode.Int64 => Convert.ToInt64(number),
+                TypeCode.Single => Convert.ToSingle(number),
+                TypeCode.Double => Convert.ToDouble(number),
+                TypeCode.Decimal => Convert.ToDecimal(number),
+                TypeCode.Object => number,
+                _ => throw new Exception($"Unsupported numeric type '{number.GetType().Name}"),
+            };
         #endregion
 
         #endregion
