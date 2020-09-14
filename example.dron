@@ -1,24 +1,17 @@
-(Id topObjectId)
-(Type "MyBigType")
+(thing)
 {
-    (FieldName "Some field name with spaces in it")
-    someNumber: 123,
-    
-    name: "Example object of sorts",
-
-    (Type "MySmallerType")
-    (FieldName "SomeObject")
-    someObj: {
-        Field1: 1.0,
-        Field2: "asd",
-        (ContainedType "float")
-        Field3: [
-            1.0,
-            2,
-            4.0,
-        ],
-        (ObjectRef)
-        Field3: @topObjectId,
-        Nullable: null,
+    (thing2 asd)
+    "someNumber": -123.456,
+    anotherNumber: "123.456",
+    id: @SomeId,
+    nestedObject: {
+        nestedNum: 1,
     },
+    things: [
+        [],
+        1,
+        "",
+        @ref,
+    ],
+    "null": null
 }

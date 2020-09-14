@@ -1,0 +1,15 @@
+{
+    "someNumber": -123.456,
+    "anotherNumber": "123.456",
+    "id": "@SomeId",
+    "nestedObject": {
+        "nestedNum": 1
+    },
+    "things": [
+        [],
+        1,
+        "",
+        "@ref"
+    ],
+    "null": null
+}

@@ -1,11 +1,11 @@
 namespace DRON.Tokens
 {
-    public abstract class Token
+    public abstract class ValueToken : Token
     {
         #region Public
 
         #region Members
-        public TokenKind Kind { get; protected set; }
+        public readonly string Value;
         #endregion
 
         #endregion
@@ -13,9 +13,10 @@ namespace DRON.Tokens
         #region Protected
         
         #region Constructors
-        protected Token(TokenKind kind)
+        protected ValueToken(TokenKind kind, string value)
+            : base(kind)
         {
-            Kind = kind;
+            Value = value;
         }
         #endregion
 

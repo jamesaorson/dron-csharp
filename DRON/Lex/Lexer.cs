@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.CompilerServices;
+using DRON.Lex.Exceptions;
 using DRON.Tokens;
 
 namespace DRON.Lex
@@ -118,9 +119,7 @@ namespace DRON.Lex
                             case char c when Char.IsWhiteSpace(c):
                                 break;
                             default:
-                                Console.WriteLine($"Unexpected character: '{character}'");
-                                SetTokenAndDone(new UnknownToken());
-                                continue;
+                                throw new UnexpectedCharacterException(character);
                         }
                         break;
                     case States.Identifier:

@@ -1,19 +1,20 @@
 namespace DRON.Tokens
 {
-    internal class QuotedIdentifierToken : Token
+    internal class QuotedIdentifierToken : IdentifierToken
     {
         #region Public
 
         #region Constructors
         internal QuotedIdentifierToken(string value)
-            : base (TokenKind.QuotedIdentifier)
+            : base (value)
         {
-            Value = value;
+            Kind = TokenKind.QuotedIdentifier;
         }
         #endregion
 
         #region Members
-        internal readonly string Value;
+        public string UnquotedValue => Value is null
+            ? null : Value.Substring(1, Value.Length - 2);
         #endregion
 
         #endregion

@@ -1,18 +1,18 @@
 namespace DRON.Parse
 {
-    public class DronNumber : DronNode
+    public class DronObjectRef : DronNode
     {
         #region Public
 
         #region Constructors
-        public DronNumber(double value)
+        public DronObjectRef(string value)
         {
             Value = value;
         }
         #endregion
 
         #region Members
-        public readonly double Value;
+        public readonly string Value;
         #endregion
 
         #endregion

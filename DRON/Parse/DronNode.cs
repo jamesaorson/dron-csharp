@@ -1,7 +1,4 @@
 namespace DRON.Parse
 {
-    public abstract class DronNode
-    {
-
-    }
+    public abstract class DronNode {}
 }
