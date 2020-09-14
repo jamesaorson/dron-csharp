@@ -11,6 +11,7 @@ namespace DRON.Serialization
             _boolDeserializer = new BoolDeserializer();
             _nullDeserializer = new NullDeserializer();
             _numberDeserializer = new NumberDeserializer();
+            _objectDeserializer = new ObjectDeserializer();
             _stringDeserializer = new StringDeserializer();
         }
         #region Internal
@@ -43,17 +44,13 @@ namespace DRON.Serialization
                             _stringDeserializer.Deserialize(property, deserializedObj, dronString);
                             break;
                         case DronObject dronObject:
-                            var child = Deserialize(dronObject, property.PropertyType);
-                            property.SetValue(deserializedObj, child);
+                            _objectDeserializer.Deserialize(property, deserializedObj, dronObject);
                             break;
                         case DronNull dronNull:
                             _nullDeserializer.Deserialize(property, deserializedObj, dronNull);
                             break;
-                        case DronTrue:
-                            _boolDeserializer.Deserialize(property, deserializedObj, true);
-                            break;
-                        case DronFalse:
-                            _boolDeserializer.Deserialize(property, deserializedObj, false);
+                        case DronBool dronBool:
+                            _boolDeserializer.Deserialize(property, deserializedObj, dronBool);
                             break;
                     }
                 }
@@ -70,6 +67,7 @@ namespace DRON.Serialization
         private readonly static BoolDeserializer _boolDeserializer;
         private readonly static NullDeserializer _nullDeserializer;
         private readonly static NumberDeserializer _numberDeserializer;
+        private readonly static ObjectDeserializer _objectDeserializer;
         private readonly static StringDeserializer _stringDeserializer;
         #endregion
 
