@@ -9,6 +9,7 @@ namespace DRON.Serialization
         static Deserializer()
         {
             _boolDeserializer = new BoolDeserializer();
+            _listDeserializer = new ListDeserializer();
             _nullDeserializer = new NullDeserializer();
             _numberDeserializer = new NumberDeserializer();
             _objectDeserializer = new ObjectDeserializer();
@@ -38,25 +39,40 @@ namespace DRON.Serialization
                     switch (field.Value)
                     {
                         case DronNumber dronNumber:
-                            _numberDeserializer.Deserialize(property, deserializedObj, dronNumber);
+                            _numberDeserializer.Deserialize(dronNumber, property, deserializedObj);
                             break;
                         case DronString dronString:
-                            _stringDeserializer.Deserialize(property, deserializedObj, dronString);
+                            _stringDeserializer.Deserialize(dronString, property, deserializedObj);
                             break;
                         case DronObject dronObject:
-                            _objectDeserializer.Deserialize(property, deserializedObj, dronObject);
+                            _objectDeserializer.Deserialize(dronObject, property, deserializedObj);
+                            break;
+                        case DronList dronList:
+                            _listDeserializer.Deserialize(dronList, property, deserializedObj);
                             break;
                         case DronNull dronNull:
-                            _nullDeserializer.Deserialize(property, deserializedObj, dronNull);
+                            _nullDeserializer.Deserialize(dronNull, property, deserializedObj);
                             break;
                         case DronBool dronBool:
-                            _boolDeserializer.Deserialize(property, deserializedObj, dronBool);
+                            _boolDeserializer.Deserialize(dronBool, property, deserializedObj);
                             break;
                     }
                 }
             }
             return deserializedObj;
         }
+
+        internal static object DeserializeNode(DronNode node, object obj = null, PropertyInfo property = null, Type typeOverride = null)
+            => node switch
+            {
+                DronNumber dronNumber => _numberDeserializer.Deserialize(dronNumber, property, obj, typeOverride),
+                DronString dronString => _stringDeserializer.Deserialize(dronString, property, obj),
+                DronObject dronObject => _objectDeserializer.Deserialize(dronObject, property, obj),
+                DronList dronList => _listDeserializer.Deserialize(dronList, property, obj),
+                DronNull dronNull => _nullDeserializer.Deserialize(dronNull, property, obj),
+                DronBool dronBool => _boolDeserializer.Deserialize(dronBool, property, obj),
+                _ => throw new Exception($"Unsupported DronNode '{node.GetType().Name}'"),
+            };
         #endregion
 
         #endregion
@@ -65,6 +81,7 @@ namespace DRON.Serialization
 
         #region Static Members
         private readonly static BoolDeserializer _boolDeserializer;
+        private readonly static ListDeserializer _listDeserializer;
         private readonly static NullDeserializer _nullDeserializer;
         private readonly static NumberDeserializer _numberDeserializer;
         private readonly static ObjectDeserializer _objectDeserializer;

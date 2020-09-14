@@ -1,3 +1,4 @@
+using System;
 using System.Reflection;
 using DRON.Parse;
 
@@ -8,9 +9,18 @@ namespace DRON.Serialization
         #region Internal
 
         #region Member Methods
-        internal override void Deserialize(PropertyInfo property, object obj, DronNull _)
+        internal override object Deserialize(
+            DronNull _,
+            PropertyInfo property = null,
+            object obj = null,
+            Type _typeOverride = null
+        )
         {
-            property.SetValue(obj, null);
+            if (obj is not null)
+            {
+                property?.SetValue(obj, null);
+            }
+            return null;
         }
         #endregion
 

@@ -24,6 +24,7 @@ public class Record
     public Guid Id { get; set; }
     public int Count { get; set; }
     public string Name { get; set; }
+    public IEnumerable<object> Numbers { get; set; }
     public double Ratio { get; set; }
     public bool IsValid { get; set; }
     public Record Child { get; set; }

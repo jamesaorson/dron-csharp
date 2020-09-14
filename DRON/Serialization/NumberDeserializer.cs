@@ -9,46 +9,65 @@ namespace DRON.Serialization
         #region Internal
 
         #region Member Methods
-        internal override void Deserialize(PropertyInfo property, object obj, DronNumber node)
+        internal override object Deserialize(
+            DronNumber node,
+            PropertyInfo property = null,
+            object obj = null,
+            Type typeOverride = null
+        )
         {
-            switch (Type.GetTypeCode(property.PropertyType))
+            var propertyType = typeOverride is not null ? typeOverride : property?.PropertyType;
+            if (propertyType is null)
+            {
+                return node.Value;
+            }
+            dynamic value;
+            switch (Type.GetTypeCode(propertyType))
             {
                 case TypeCode.Byte:
-                    property.SetValue(obj, (byte)node.Value);
+                    value = (byte)node.Value;
                     break;
                 case TypeCode.SByte:
-                    property.SetValue(obj, (sbyte)node.Value);
+                    value = (sbyte)node.Value;
                     break;
                 case TypeCode.UInt16:
-                    property.SetValue(obj, (ushort)node.Value);
+                    value = (ushort)node.Value;
                     break;
                 case TypeCode.Int16:
-                    property.SetValue(obj, (short)node.Value);
+                    value = (short)node.Value;
                     break;
                 case TypeCode.UInt32:
-                    property.SetValue(obj, (uint)node.Value);
+                    value = (uint)node.Value;
                     break;
                 case TypeCode.Int32:
-                    property.SetValue(obj, (int)node.Value);
+                    value = (int)node.Value;
                     break;
                 case TypeCode.UInt64:
-                    property.SetValue(obj, (ulong)node.Value);
+                    value = (ulong)node.Value;
                     break;
                 case TypeCode.Int64:
-                    property.SetValue(obj, (long)node.Value);
+                    value = (long)node.Value;
                     break;
                 case TypeCode.Single:
-                    property.SetValue(obj, (float)node.Value);
+                    value = (float)node.Value;
                     break;
                 case TypeCode.Double:
-                    property.SetValue(obj, (double)node.Value);
+                    value = (double)node.Value;
                     break;
                 case TypeCode.Decimal:
-                    property.SetValue(obj, (decimal)node.Value);
+                    value = (decimal)node.Value;
+                    break;
+                case TypeCode.Object:
+                    value = node.Value;
                     break;
                 default:
                     throw new Exception($"Unsupported numeric type '{property.PropertyType.Name}");
             }
+            if (obj is not null)
+            {
+                property?.SetValue(obj, value);
+            }
+            return value;
         }
         #endregion
 

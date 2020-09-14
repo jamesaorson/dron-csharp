@@ -4,6 +4,11 @@
     "Ratio": 0.8,
     "Name": "record1",
     "IsValid": true,
+    "Numbers": [
+        1,
+        "asd",
+        false
+    ],
     "Child": {
         "Id": "C17AC2F7-75F5-4BF7-BD6E-7CA2B12E9AE6",
         "Count": 2,

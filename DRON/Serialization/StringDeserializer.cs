@@ -9,14 +9,27 @@ namespace DRON.Serialization
         #region Internal
 
         #region Static Methods
-        internal override void Deserialize(PropertyInfo property, object obj, DronString node)
+        internal override object Deserialize(
+            DronString node,
+            PropertyInfo property = null,
+            object obj = null,
+            Type _typeOverride = null
+        )
         {
+            dynamic value = node.Value;
+            if (property is null)
+            {
+                return value;
+            }
             if (property.PropertyType == typeof(Guid))
             {
-                property.SetValue(obj, new Guid(node.Value));
-                return;
+                value = new Guid(value);
             }
-            property.SetValue(obj, node.Value);
+            if (obj is not null)
+            {
+                property.SetValue(obj, value);
+            }
+            return value;
         }
         #endregion
 
