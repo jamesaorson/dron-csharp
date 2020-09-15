@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using DRON.Parse;
 
-namespace DRON.Serialization
+namespace DRON.Deserialization
 {
     internal static class Deserializer
     {

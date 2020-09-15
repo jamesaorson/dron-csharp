@@ -2,7 +2,7 @@ using System;
 using System.Reflection;
 using DRON.Parse;
 
-namespace DRON.Serialization
+namespace DRON.Deserialization
 {
     internal class ObjectDeserializer : DeserializerBase<DronObject>
     {
