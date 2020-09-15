@@ -6,20 +6,6 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using DRON;
 
-public class Example
-{
-    public class Nested
-    {
-        public int NestedNum { get; set; }
-    }
-    public string AnotherNumber { get; set; }
-    public double SomeNumber { get; set; }
-    public string Id { get; set; }
-    public Nested NestedObject { get; set; }
-    public IList<object> Things { get; set; }
-    public string Null { get; set; }
-}
-
 public class Record
 {
     public Guid Id { get; set; }
@@ -29,6 +15,7 @@ public class Record
     public double Ratio { get; set; }
     public bool IsValid { get; set; }
     public Record Child { get; set; }
+    public Dictionary<string, string> EmptyDict { get; set; }
 }
 
 class Program

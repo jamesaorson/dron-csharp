@@ -19,5 +19,8 @@
         "Ratio": 0.9,
         "Name": "record2",
         "IsValid": true
+    },
+    "EmptyDict": {
+        "": ""
     }
 }

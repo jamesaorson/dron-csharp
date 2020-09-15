@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using DRON.Parse;
@@ -27,7 +28,7 @@ namespace DRON.Deserialization
 
         internal static object Deserialize(DronNode node, Type returnType)
         {
-            if (returnType.IsGenericType && returnType.GetGenericTypeDefinition() == typeof(IDictionary<,>))
+            if (returnType.GetInterface(nameof(IDictionary)) is not null)
             {
                 return _dictDeserializer.Deserialize(node as DronObject, typeOverride: returnType);
             }
