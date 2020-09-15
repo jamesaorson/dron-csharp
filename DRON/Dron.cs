@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using DRON.Serialization;
 
 namespace DRON
 {
@@ -14,11 +15,11 @@ namespace DRON
 
         #region Static Methods
         public static T Deserialize<T>([NotNull] string dronString)
-            where T : new()
+            where T : class, new()
             => DeserializeAsync<T>(dronString).Result;
         
         public async static Task<T> DeserializeAsync<T>([NotNull] string dronString)
-            where T : new()
+            where T : class, new()
             => await DeserializeAsync<T>(
                 new MemoryStream(
                     Encoding.UTF8.GetBytes(dronString ?? "")
@@ -26,11 +27,11 @@ namespace DRON
             );
 
         public static T Deserialize<T>([NotNull] Stream stream)
-            where T : new()
+            where T : class, new()
             => DeserializeAsync<T>(stream).Result;
         
         public async static Task<T> DeserializeAsync<T>([NotNull] Stream stream)
-            where T : new()
+            where T : class, new()
         {
             var node = await Task.Run(() =>
                 {
@@ -41,6 +42,10 @@ namespace DRON
             );
             return Deserializer.Deserialize<T>(node);
         }
+
+        public static DronNode Serialize<T>(T value)
+            where T : class, new()
+            => Serializer.Serialize<T>(value);
         #endregion
 
         #endregion

@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using DRON.Lex;
 using DRON.Parse.Exceptions;
 using DRON.Tokens;
 
@@ -79,8 +77,7 @@ namespace DRON.Parse
 
         private DronNode ParseDron()
             => _currentToken is null ? null : _currentToken.Kind switch {
-                TokenKind.OpenParenthese => ParseObject(),
-                TokenKind.OpenBrace => ParseObject(),
+                TokenKind.OpenBrace or TokenKind.OpenParenthese => ParseObject(),
                 TokenKind.OpenBracket => ParseList(),
                 _ => throw new UnexpectedTokenException(typeof(DronNode), _currentToken),
             };
@@ -166,12 +163,12 @@ namespace DRON.Parse
         {
             return _currentToken.Kind switch
             {
-                TokenKind.OpenBrace => ParseObject(),
+                TokenKind.OpenBrace or TokenKind.OpenParenthese => ParseObject(),
                 TokenKind.OpenBracket => ParseList(),
-                TokenKind.OpenParenthese => ParseObject(),
                 TokenKind.ObjectRefIdentifier => ParseObjectRef(),
                 TokenKind.QuotedIdentifier => ParseQuotedIdentifier(),
-                TokenKind.Number => ParseNumber(),
+                TokenKind.FloatingNumber => ParseFloatingNumber(),
+                TokenKind.IntegralNumber => ParseIntegralNumber(),
                 TokenKind.Null => ParseNull(),
                 TokenKind.True => ParseTrue(),
                 TokenKind.False => ParseFalse(),
@@ -185,18 +182,33 @@ namespace DRON.Parse
             return new DronNull();
         }
 
-        private DronNumber ParseNumber()
+        private DronFloatingNumber ParseFloatingNumber()
         {
             switch (_currentToken.Kind)
             {
-                case TokenKind.Number:
-                    var number = new DronNumber(
-                        (_currentToken as NumberToken).NumericValue.Value
+                case TokenKind.FloatingNumber:
+                    var number = new DronFloatingNumber(
+                        (_currentToken as FloatingNumberToken).NumericValue.Value
                     );
                     Chomp();
                     return number;
                 default:
-                    throw new UnexpectedTokenException(typeof(DronNumber), _currentToken);
+                    throw new UnexpectedTokenException(typeof(DronFloatingNumber), _currentToken);
+            }
+        }
+
+        private DronIntegralNumber ParseIntegralNumber()
+        {
+            switch (_currentToken.Kind)
+            {
+                case TokenKind.IntegralNumber:
+                    var number = new DronIntegralNumber(
+                        (_currentToken as IntegralNumberToken).NumericValue.Value
+                    );
+                    Chomp();
+                    return number;
+                default:
+                    throw new UnexpectedTokenException(typeof(DronIntegralNumber), _currentToken);
             }
         }
 

@@ -1,12 +1,12 @@
 namespace DRON.Tokens
 {
-    internal class NumberToken : ValueToken
+    internal class FloatingNumberToken : ValueToken
     {
         #region Public
 
         #region Constructors
-        internal NumberToken(string value)
-            : base (TokenKind.Number, value) {}
+        internal FloatingNumberToken(string value)
+            : base (TokenKind.FloatingNumber, value) {}
         #endregion
 
         #region Members

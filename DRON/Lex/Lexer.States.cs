@@ -9,10 +9,10 @@ namespace DRON.Lex
         {
             Done,
             Identifier,
-            NumberNegative,
+            NegativeNumber,
             Number,
-            NumberFloatingStart,
-            NumberFloating,
+            FloatingNumberStart,
+            FloatingNumber,
             ObjectRefIdentifier,
             QuotedIdentifier,
             Start,

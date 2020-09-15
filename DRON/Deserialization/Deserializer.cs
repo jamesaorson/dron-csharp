@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using DRON.Parse;
@@ -12,9 +11,10 @@ namespace DRON.Deserialization
         {
             _boolDeserializer = new BoolDeserializer();
             _dictDeserializer = new DictDeserializer();
+            _floatingNumberDeserializer = new FloatingNumberDeserializer();
+            _integralNumberDeserializer = new IntegralNumberDeserializer();
             _listDeserializer = new ListDeserializer();
             _nullDeserializer = new NullDeserializer();
-            _numberDeserializer = new NumberDeserializer();
             _objectDeserializer = new ObjectDeserializer();
             _stringDeserializer = new StringDeserializer();
         }
@@ -22,7 +22,7 @@ namespace DRON.Deserialization
 
         #region Static Methods
         internal static T Deserialize<T>(DronNode node)
-            where T : new()
+            where T : class, new()
                 => (T)Deserialize(node, typeof(T));
 
         internal static object Deserialize(DronNode node, Type returnType)
@@ -45,8 +45,11 @@ namespace DRON.Deserialization
                     }
                     switch (field.Value)
                     {
-                        case DronNumber dronNumber:
-                            _numberDeserializer.Deserialize(dronNumber, property, deserializedObj);
+                        case DronFloatingNumber dronNumber:
+                            _floatingNumberDeserializer.Deserialize(dronNumber, property, deserializedObj);
+                            break;
+                        case DronIntegralNumber dronNumber:
+                            _integralNumberDeserializer.Deserialize(dronNumber, property, deserializedObj);
                             break;
                         case DronString dronString:
                             _stringDeserializer.Deserialize(dronString, property, deserializedObj);
@@ -69,10 +72,16 @@ namespace DRON.Deserialization
             return deserializedObj;
         }
 
-        internal static object DeserializeNode(DronNode node, object obj = null, PropertyInfo property = null, Type typeOverride = null)
+        internal static object DeserializeNode(
+            DronNode node,
+            object obj = null,
+            PropertyInfo property = null,
+            Type typeOverride = null
+        )
             => node switch
             {
-                DronNumber dronNumber => _numberDeserializer.Deserialize(dronNumber, property, obj, typeOverride),
+                DronFloatingNumber dronNumber => _floatingNumberDeserializer.Deserialize(dronNumber, property, obj, typeOverride),
+                DronIntegralNumber dronNumber => _integralNumberDeserializer.Deserialize(dronNumber, property, obj, typeOverride),
                 DronString dronString => _stringDeserializer.Deserialize(dronString, property, obj),
                 DronObject dronObject => _objectDeserializer.Deserialize(dronObject, property, obj, typeOverride),
                 DronList dronList => _listDeserializer.Deserialize(dronList, property, obj, typeOverride),
@@ -89,9 +98,10 @@ namespace DRON.Deserialization
         #region Static Members
         private readonly static BoolDeserializer _boolDeserializer;
         private readonly static DictDeserializer _dictDeserializer;
+        private readonly static FloatingNumberDeserializer _floatingNumberDeserializer;
+        private readonly static IntegralNumberDeserializer _integralNumberDeserializer;
         private readonly static ListDeserializer _listDeserializer;
         private readonly static NullDeserializer _nullDeserializer;
-        private readonly static NumberDeserializer _numberDeserializer;
         private readonly static ObjectDeserializer _objectDeserializer;
         private readonly static StringDeserializer _stringDeserializer;
         #endregion

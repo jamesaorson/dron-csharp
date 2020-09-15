@@ -108,7 +108,7 @@ namespace DRON.Lex
                                 _state = States.ObjectRefIdentifier;
                                 break;
                             case Alphabet.Hyphen:
-                                _state = States.NumberNegative;
+                                _state = States.NegativeNumber;
                                 break;
                             case char c when Char.IsDigit(character):
                                 _state = States.Number;
@@ -181,7 +181,7 @@ namespace DRON.Lex
                             continue;
                         }
                         break;
-                    case States.NumberNegative:
+                    case States.NegativeNumber:
                         if (!Char.IsDigit(character))
                         {
                             throw new Exception("Expected at least one digit following a negative sign");
@@ -189,23 +189,23 @@ namespace DRON.Lex
                         _state = States.Number;
                         _preserveLastValue = true;
                         continue;
-                    case States.NumberFloatingStart:
+                    case States.FloatingNumberStart:
                         if (!Char.IsDigit(character))
                         {
                             throw new Exception("Expected at least one digit following a decimal point");
                         }
-                        _state = States.NumberFloating;
+                        _state = States.FloatingNumber;
                         _preserveLastValue = true;
                         continue;
                     case States.Number:
-                    case States.NumberFloating:
+                    case States.FloatingNumber:
                         if (character == Alphabet.Decimal)
                         {
-                            if (_state == States.NumberFloating)
+                            if (_state == States.FloatingNumber)
                             {
                                 throw new Exception("Extra decimal found in floating point number");
                             }
-                            _state = States.NumberFloatingStart;
+                            _state = States.FloatingNumberStart;
                             break;
                         }
                         if (Char.IsLetter(character))
@@ -217,7 +217,9 @@ namespace DRON.Lex
                             break;
                         }
                         SetTokenAndDone(
-                            new NumberToken(_tokenString.Trim())
+                            _state == States.FloatingNumber
+                                ? new FloatingNumberToken(_tokenString.Trim())
+                                : new IntegralNumberToken(_tokenString.Trim())
                         );
                         _preserveLastValue = true;
                         continue;

@@ -1,20 +1,7 @@
 namespace DRON.Parse
 {
-    public class DronNumber : DronNode
+    public interface IDronNumber
     {
-        #region Public
-
-        #region Constructors
-        public DronNumber(double value)
-        {
-            Value = value;
-        }
-        #endregion
-
-        #region Members
-        public readonly double Value;
-        #endregion
-
-        #endregion
+        object Value { get; set; }
     }
 }

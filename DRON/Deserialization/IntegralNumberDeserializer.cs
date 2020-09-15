@@ -4,13 +4,14 @@ using DRON.Parse;
 
 namespace DRON.Deserialization
 {
-    internal class NumberDeserializer : DeserializerBase<DronNumber>
+    internal class IntegralNumberDeserializer : DeserializerBase<DronIntegralNumber>
+        
     {
         #region Internal
 
         #region Member Methods
         internal override object Deserialize(
-            DronNumber node,
+            DronIntegralNumber node,
             PropertyInfo property = null,
             object obj = null,
             Type typeOverride = null
@@ -42,11 +43,8 @@ namespace DRON.Deserialization
                 TypeCode.Int32 => Convert.ToInt32(number),
                 TypeCode.UInt64 => Convert.ToUInt64(number),
                 TypeCode.Int64 => Convert.ToInt64(number),
-                TypeCode.Single => Convert.ToSingle(number),
-                TypeCode.Double => Convert.ToDouble(number),
-                TypeCode.Decimal => Convert.ToDecimal(number),
                 TypeCode.Object => number,
-                _ => throw new Exception($"Unsupported numeric type '{number.GetType().Name}"),
+                _ => throw new Exception($"Unsupported integral numeric type '{number.GetType().Name}"),
             };
         #endregion
 

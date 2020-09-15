@@ -14,7 +14,15 @@ namespace DRON.Parse
         )
             : base(attributes)
         {
-            Name = name.Substring(1, name.Length - 2);
+            if (name[0] == '"')
+            {
+                name = name.Substring(1);
+                if (name[name.Length - 1] == '"')
+                {
+                    name = name.Substring(0, name.Length - 1);
+                }
+            }
+            Name = name;
             Value = value;
         }
         #endregion
