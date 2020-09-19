@@ -13,5 +13,20 @@ namespace DRON.Serialization
         #endregion
 
         #endregion
+
+        #region Protected
+
+        #region Constructors
+        protected SerializerBase(Serializer serializer)
+        {
+            _serializer = serializer;
+        }
+        #endregion
+
+        #region Members
+        protected readonly Serializer _serializer;
+        #endregion
+
+        #endregion
     }
 }

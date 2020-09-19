@@ -9,6 +9,11 @@ namespace DRON.Deserialization
     {
         #region Internal
 
+        #region Constructors
+        internal IntegralNumberDeserializer(Deserializer deserializer)
+            : base(deserializer) {}
+        #endregion
+
         #region Member Methods
         internal override object Deserialize(
             DronIntegralNumber node,

@@ -1,32 +1,31 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Reflection;
 using DRON.Parse;
 
 namespace DRON.Deserialization
 {
-    internal static class Deserializer
+    internal class Deserializer
     {
-        static Deserializer()
+        internal Deserializer()
         {
-            _boolDeserializer = new BoolDeserializer();
-            _dictDeserializer = new DictDeserializer();
-            _floatingNumberDeserializer = new FloatingNumberDeserializer();
-            _integralNumberDeserializer = new IntegralNumberDeserializer();
-            _listDeserializer = new ListDeserializer();
-            _nullDeserializer = new NullDeserializer();
-            _objectDeserializer = new ObjectDeserializer();
-            _stringDeserializer = new StringDeserializer();
+            _boolDeserializer = new BoolDeserializer(this);
+            _dictDeserializer = new DictDeserializer(this);
+            _floatingNumberDeserializer = new FloatingNumberDeserializer(this);
+            _integralNumberDeserializer = new IntegralNumberDeserializer(this);
+            _listDeserializer = new ListDeserializer(this);
+            _nullDeserializer = new NullDeserializer(this);
+            _objectDeserializer = new ObjectDeserializer(this);
+            _stringDeserializer = new StringDeserializer(this);
         }
         #region Internal
 
-        #region Static Methods
-        internal static T Deserialize<T>(DronNode node)
+        #region Member Methods
+        internal T Deserialize<T>(DronNode node)
             where T : class, new()
                 => (T)Deserialize(node, typeof(T));
 
-        internal static object Deserialize(DronNode node, Type returnType)
+        internal object Deserialize(DronNode node, Type returnType)
         {
             if (returnType.GetInterface(nameof(IDictionary)) is not null)
             {
@@ -87,8 +86,8 @@ namespace DRON.Deserialization
             }
             return deserializedObj;
         }
-
-        internal static object DeserializeNode(
+        
+        internal object DeserializeNode(
             DronNode node,
             object obj = null,
             PropertyInfo property = null,
@@ -111,15 +110,15 @@ namespace DRON.Deserialization
 
         #region Private
 
-        #region Static Members
-        private readonly static BoolDeserializer _boolDeserializer;
-        private readonly static DictDeserializer _dictDeserializer;
-        private readonly static FloatingNumberDeserializer _floatingNumberDeserializer;
-        private readonly static IntegralNumberDeserializer _integralNumberDeserializer;
-        private readonly static ListDeserializer _listDeserializer;
-        private readonly static NullDeserializer _nullDeserializer;
-        private readonly static ObjectDeserializer _objectDeserializer;
-        private readonly static StringDeserializer _stringDeserializer;
+        #region Members
+        private readonly BoolDeserializer _boolDeserializer;
+        private readonly DictDeserializer _dictDeserializer;
+        private readonly FloatingNumberDeserializer _floatingNumberDeserializer;
+        private readonly IntegralNumberDeserializer _integralNumberDeserializer;
+        private readonly ListDeserializer _listDeserializer;
+        private readonly NullDeserializer _nullDeserializer;
+        private readonly ObjectDeserializer _objectDeserializer;
+        private readonly StringDeserializer _stringDeserializer;
         #endregion
 
         #region Static Methods

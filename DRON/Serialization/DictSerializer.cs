@@ -10,6 +10,11 @@ namespace DRON.Serialization
     {
         #region Internal
 
+        #region Constructors
+        internal DictSerializer(Serializer serializer)
+            : base(serializer) {}
+        #endregion
+
         #region Member Methods
         internal override DronObject Serialize(IDictionary dict)
         {
@@ -20,8 +25,8 @@ namespace DRON.Serialization
         }
         #endregion
 
-        #region Static Methods
-        internal static IReadOnlyDictionary<string, DronField> ConvertDictToFields(IDictionary dict)
+        #region Member Methods
+        internal IReadOnlyDictionary<string, DronField> ConvertDictToFields(IDictionary dict)
         {
             if (dict is null)
             {
@@ -36,7 +41,7 @@ namespace DRON.Serialization
                         throw new Exception($"Dictionary key was unsupported type '{key.GetType().Name}'");
                 }
                 var fieldName = key as string;
-                var fieldNode = Serializer.Serialize(dict[key]);
+                var fieldNode = _serializer.Serialize(dict[key]);
                 fields[fieldName] = new DronField(
                     new List<DronAttribute>(),
                     fieldName,
@@ -45,11 +50,8 @@ namespace DRON.Serialization
             }
             return fields;
         }       
-        #endregion
-
-        #region Static Methods
-        internal static void ToDronSourceString(DronObject node, StringBuilder builder)
-            => ObjectSerializer.ToDronSourceString(node, builder);
+        internal void ToDronSourceString(DronObject node, StringBuilder builder)
+            => _serializer._objectSerializer.ToDronSourceString(node, builder);
         #endregion
 
         #endregion

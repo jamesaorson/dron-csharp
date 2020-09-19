@@ -8,6 +8,11 @@ namespace DRON.Deserialization
     {
         #region Internal
 
+        #region Constructors
+        internal NullDeserializer(Deserializer deserializer)
+            : base(deserializer) {}
+        #endregion
+
         #region Member Methods
         internal override object Deserialize(
             DronNull _,

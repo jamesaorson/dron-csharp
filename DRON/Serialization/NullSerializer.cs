@@ -7,12 +7,15 @@ namespace DRON.Serialization
     {
         #region Internal
 
-        #region Member Methods
-        internal override DronNull Serialize(object _) => new DronNull();
+        #region Constructors
+        internal NullSerializer(Serializer serializer)
+            : base(serializer) {}
         #endregion
 
-        #region Static Methods
-        internal static void ToDronSourceString(DronNull _, StringBuilder builder)
+        #region Member Methods
+        internal override DronNull Serialize(object _) => new DronNull();
+        
+        internal void ToDronSourceString(DronNull _, StringBuilder builder)
             => builder.Append("null");
         #endregion
 

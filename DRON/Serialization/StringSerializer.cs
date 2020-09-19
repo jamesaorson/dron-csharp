@@ -8,9 +8,17 @@ namespace DRON.Serialization
     {
         #region Internal
 
-        #region Static Methods
+        #region Constructors
+        internal StringSerializer(Serializer serializer)
+            : base(serializer) {}
+        #endregion
+
+        #region Member Methods
         internal override DronString Serialize(object value)
             => new DronString(ConvertToString(value));
+        
+        internal void ToDronSourceString(DronString node, StringBuilder builder)
+            => builder.Append($"\"{node.Value}\"");
         #endregion
 
         #region Static Methods
@@ -21,9 +29,6 @@ namespace DRON.Serialization
                 Guid guid => guid.ToString(),
                 _ => throw new Exception($"Unsupported string type '{value.GetType().Name}'"),
             };
-        
-        internal static void ToDronSourceString(DronString node, StringBuilder builder)
-            => builder.Append($"\"{node.Value}\"");
         #endregion
 
         #endregion

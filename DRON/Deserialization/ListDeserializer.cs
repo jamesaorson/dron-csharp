@@ -11,6 +11,11 @@ namespace DRON.Deserialization
     {
         #region Internal
 
+        #region Constructors
+        internal ListDeserializer(Deserializer deserializer)
+            : base(deserializer) {}
+        #endregion
+
         #region Member Methods
         internal override object Deserialize(
             DronList dronList,
@@ -39,7 +44,7 @@ namespace DRON.Deserialization
                         throw new Exception($"Unsupported IEnumerable '{propertyType.Name}'");
                 }
             }
-            return dronList.Items.Select(item => Deserializer.DeserializeNode(item));
+            return dronList.Items.Select(item => _deserializer.DeserializeNode(item));
         }
         #endregion
 
@@ -48,7 +53,7 @@ namespace DRON.Deserialization
         #region Private
 
         #region Member Methods
-        private static IList ConvertDronListToList(
+        private IList ConvertDronListToList(
             DronList dronList,
             Type propertyType
         )
@@ -59,13 +64,13 @@ namespace DRON.Deserialization
             foreach (var item in dronList.Items)
             {
                 castItems.Add(
-                    Deserializer.DeserializeNode(item, typeOverride: itemType)
+                    _deserializer.DeserializeNode(item, typeOverride: itemType)
                 );
             }
             return castItems;
         }
 
-        private static IEnumerable DeserializeDronListToList(
+        private IEnumerable DeserializeDronListToList(
             DronList dronList,
             PropertyInfo property,
             Type propertyType,
@@ -80,7 +85,7 @@ namespace DRON.Deserialization
             return castItems;
         }
 
-        private static IEnumerable DeserializeDronListToArray(
+        private IEnumerable DeserializeDronListToArray(
             DronList dronList,
             PropertyInfo property,
             Type propertyType,

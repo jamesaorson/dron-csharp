@@ -9,6 +9,11 @@ namespace DRON.Serialization
     {
         #region Internal
 
+        #region Constructors
+        internal ObjectSerializer(Serializer serializer)
+            : base(serializer) {}
+        #endregion
+
         #region Constants
         internal const char OBJECT_START = '{';
         internal const char OBJECT_END = '}';
@@ -25,13 +30,13 @@ namespace DRON.Serialization
             }
             return new DronObject(
                 new List<DronAttribute>(),
-                DictSerializer.ConvertDictToFields(fieldsDict)
+                _serializer._dictSerializer.ConvertDictToFields(fieldsDict)
             );
         }
         #endregion
 
-        #region Static Methods
-        internal static void ToDronSourceString(DronObject node, StringBuilder builder)
+        #region Member Methods
+        internal void ToDronSourceString(DronObject node, StringBuilder builder)
         {
             builder.Append(OBJECT_START);
             builder.AppendJoin(
@@ -48,9 +53,9 @@ namespace DRON.Serialization
 
         #region Private
 
-        #region Static Methods
-        private static string ToDronSourceString(string fieldName, DronField field)
-            => $"\"{fieldName}\": {Serializer.ToDronSourceString(field.Value)}";
+        #region Member Methods
+        private string ToDronSourceString(string fieldName, DronField field)
+            => $"\"{fieldName}\": {_serializer.ToDronSourceString(field.Value)}";
         #endregion
 
         #endregion

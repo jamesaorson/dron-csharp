@@ -8,9 +8,17 @@ namespace DRON.Serialization
     {
         #region Internal
 
+        #region Constructors
+        internal FloatingNumberSerializer(Serializer serializer)
+            : base(serializer) {}
+        #endregion
+
         #region Member Methods
         internal override DronFloatingNumber Serialize(object number)
             => new DronFloatingNumber(ConvertToFloatingNumber(number));
+        
+        internal void ToDronSourceString(DronFloatingNumber node, StringBuilder builder)
+            => builder.Append(node.Value);
         #endregion
 
         #region Static Methods
@@ -25,9 +33,6 @@ namespace DRON.Serialization
                 Single or Double or Decimal => true,
                 _ => false,
             };
-        
-        internal static void ToDronSourceString(DronFloatingNumber node, StringBuilder builder)
-            => builder.Append(node.Value);
         #endregion
 
         #endregion

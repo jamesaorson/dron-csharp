@@ -17,7 +17,7 @@ namespace DRON.Lex
         {
             if (stream is null)
             {
-                throw new System.ArgumentNullException("'stream' cannot be null");
+                throw new ArgumentNullException("'stream' cannot be null");
             }
             
             _stream = stream;

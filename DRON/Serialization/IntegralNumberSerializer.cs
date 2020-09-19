@@ -8,9 +8,17 @@ namespace DRON.Serialization
     {
         #region Internal
 
+        #region Constructors
+        internal IntegralNumberSerializer(Serializer serializer)
+            : base(serializer) {}
+        #endregion
+
         #region Member Methods
         internal override DronIntegralNumber Serialize(object number)
             => new DronIntegralNumber(ConvertToIntegralNumber(number));
+        
+        internal void ToDronSourceString(DronIntegralNumber node, StringBuilder builder)
+            => builder.Append(node.Value);
         #endregion
 
         #region Static Methods
@@ -34,9 +42,6 @@ namespace DRON.Serialization
                  ) => true,
                 _ => false,
             };
-        
-        internal static void ToDronSourceString(DronIntegralNumber node, StringBuilder builder)
-            => builder.Append(node.Value);
         #endregion
 
         #endregion

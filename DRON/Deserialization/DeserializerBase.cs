@@ -19,5 +19,20 @@ namespace DRON.Deserialization
         #endregion
 
         #endregion
+
+        #region Protected
+
+        #region Constructors
+        protected DeserializerBase(Deserializer deserializer)
+        {
+            _deserializer = deserializer;
+        }
+        #endregion
+        
+        #region Members
+        protected readonly Deserializer _deserializer;
+        #endregion
+
+        #endregion
     }
 }

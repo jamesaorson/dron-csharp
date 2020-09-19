@@ -8,6 +8,11 @@ namespace DRON.Deserialization
     {
         #region Internal
 
+        #region Constructors
+        internal ObjectDeserializer(Deserializer deserializer)
+            : base(deserializer) {}
+        #endregion
+
         #region Member Methods
         internal override object Deserialize(
             DronObject dronObject,
@@ -21,7 +26,7 @@ namespace DRON.Deserialization
             {
                 throw new Exception("Must provide type guidance to deserialize a DronObject");
             }
-            var deserializedObj = Deserializer.Deserialize(dronObject, propertyType);
+            var deserializedObj = _deserializer.Deserialize(dronObject, propertyType);
             if (obj is not null)
             {
                 property?.SetValue(obj, deserializedObj);

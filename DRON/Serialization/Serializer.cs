@@ -5,23 +5,23 @@ using DRON.Parse;
 
 namespace DRON.Serialization
 {
-    internal static class Serializer
+    internal class Serializer
     {
-        static Serializer()
+        internal Serializer()
         {
-            _boolSerializer = new BoolSerializer();
-            _dictSerializer = new DictSerializer();
-            _listSerializer = new ListSerializer();
-            _nullSerializer = new NullSerializer();
-            _floatingNumberSerializer = new FloatingNumberSerializer();
-            _integralNumberSerializer = new IntegralNumberSerializer();
-            _objectSerializer = new ObjectSerializer();
-            _stringSerializer = new StringSerializer();
+            _boolSerializer = new BoolSerializer(this);
+            _dictSerializer = new DictSerializer(this);
+            _listSerializer = new ListSerializer(this);
+            _nullSerializer = new NullSerializer(this);
+            _floatingNumberSerializer = new FloatingNumberSerializer(this);
+            _integralNumberSerializer = new IntegralNumberSerializer(this);
+            _objectSerializer = new ObjectSerializer(this);
+            _stringSerializer = new StringSerializer(this);
         }
         #region Internal
 
-        #region Static Methods
-        internal static DronNode Serialize<T>(T obj)
+        #region Member Methods
+        internal DronNode Serialize<T>(T obj)
             where T : class, new()
         {
             if (FloatingNumberSerializer.IsConvertible(obj))
@@ -43,31 +43,31 @@ namespace DRON.Serialization
             };
         }
 
-        internal static string ToDronSourceString(DronNode node)
+        internal string ToDronSourceString(DronNode node)
         {
             var builder = new StringBuilder();
             switch (node)
             {
                 case DronBool boolNode:
-                    BoolSerializer.ToDronSourceString(boolNode, builder);
+                    _boolSerializer.ToDronSourceString(boolNode, builder);
                     break;
                 case DronObject objNode:
-                    ObjectSerializer.ToDronSourceString(objNode, builder);
+                    _objectSerializer.ToDronSourceString(objNode, builder);
                     break;
                 case DronFloatingNumber floatingNode:
-                    FloatingNumberSerializer.ToDronSourceString(floatingNode, builder);
+                    _floatingNumberSerializer.ToDronSourceString(floatingNode, builder);
                     break;
                 case DronIntegralNumber integralNode:
-                    IntegralNumberSerializer.ToDronSourceString(integralNode, builder);
+                    _integralNumberSerializer.ToDronSourceString(integralNode, builder);
                     break;
                 case DronList listNode:
-                    ListSerializer.ToDronSourceString(listNode, builder);
+                    _listSerializer.ToDronSourceString(listNode, builder);
                     break;
                 case DronNull nullNode:
-                    NullSerializer.ToDronSourceString(nullNode, builder);
+                    _nullSerializer.ToDronSourceString(nullNode, builder);
                     break;
                 case DronString stringNode:
-                    StringSerializer.ToDronSourceString(stringNode, builder);
+                    _stringSerializer.ToDronSourceString(stringNode, builder);
                     break;
                 default:
                     throw new Exception($"Unsupported Dron node type {node.GetType().Name}");
@@ -76,22 +76,15 @@ namespace DRON.Serialization
         }
         #endregion
 
-        #endregion
-
-        #region Private
-
-        #region Static Members
-        private readonly static BoolSerializer _boolSerializer;
-        private readonly static DictSerializer _dictSerializer;
-        private readonly static ListSerializer _listSerializer;
-        private readonly static NullSerializer _nullSerializer;
-        private readonly static FloatingNumberSerializer _floatingNumberSerializer;
-        private readonly static IntegralNumberSerializer _integralNumberSerializer;
-        private readonly static ObjectSerializer _objectSerializer;
-        private readonly static StringSerializer _stringSerializer;
-        #endregion
-
-        #region Static Methods
+        #region Members
+        internal readonly BoolSerializer _boolSerializer;
+        internal readonly DictSerializer _dictSerializer;
+        internal readonly ListSerializer _listSerializer;
+        internal readonly NullSerializer _nullSerializer;
+        internal readonly FloatingNumberSerializer _floatingNumberSerializer;
+        internal readonly IntegralNumberSerializer _integralNumberSerializer;
+        internal readonly ObjectSerializer _objectSerializer;
+        internal readonly StringSerializer _stringSerializer;
         #endregion
 
         #endregion

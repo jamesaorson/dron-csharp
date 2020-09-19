@@ -10,6 +10,11 @@ namespace DRON.Serialization
     {
         #region Internal
 
+        #region Constructors
+        internal ListSerializer(Serializer serializer)
+            : base(serializer) {}
+        #endregion
+
         #region Constants
         internal const char LIST_START = '[';
         internal const char LIST_END = ']';
@@ -25,19 +30,17 @@ namespace DRON.Serialization
             var items = new List<DronNode>();
             foreach (var item in list)
             {
-                items.Add(Serializer.Serialize(item));
+                items.Add(_serializer.Serialize(item));
             }
             return new DronList(items);
         }
-        #endregion
 
-        #region Static Methods
-        internal static void ToDronSourceString(DronList node, StringBuilder builder)
+        internal void ToDronSourceString(DronList node, StringBuilder builder)
         {
             builder.Append(LIST_START);
             builder.AppendJoin(
                 ',',
-                node.Items.Select(item => Serializer.ToDronSourceString(item))
+                node.Items.Select(item => _serializer.ToDronSourceString(item))
             );
             builder.Append(LIST_END);
         }

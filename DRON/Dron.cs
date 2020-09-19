@@ -40,14 +40,17 @@ namespace DRON
                     return parser.Parse(lexer.Lex(stream));
                 }
             );
-            return Deserializer.Deserialize<T>(node);
+            return new Deserializer().Deserialize<T>(node);
         }
 
         public static string Serialize<T>(T value)
             where T : class, new()
-            => Serializer.ToDronSourceString(
-                Serializer.Serialize<T>(value)
+        {
+            var serializer = new Serializer();
+            return serializer.ToDronSourceString(
+                serializer.Serialize<T>(value)
             );
+        }
         #endregion
 
         #endregion

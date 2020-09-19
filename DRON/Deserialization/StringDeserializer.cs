@@ -8,7 +8,12 @@ namespace DRON.Deserialization
     {
         #region Internal
 
-        #region Static Methods
+        #region Constructors
+        internal StringDeserializer(Deserializer deserializer)
+            : base(deserializer) {}
+        #endregion
+
+        #region Member Methods
         internal override object Deserialize(
             DronString node,
             PropertyInfo property = null,
