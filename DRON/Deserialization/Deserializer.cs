@@ -47,10 +47,25 @@ namespace DRON.Deserialization
                     switch (field.Value)
                     {
                         case DronFloatingNumber dronNumber:
-                            _floatingNumberDeserializer.Deserialize(dronNumber, property, deserializedObj);
+                            if (FloatingNumberDeserializer.IsConvertible(property))
+                            {
+                                _floatingNumberDeserializer.Deserialize(dronNumber, property, deserializedObj);
+                            }
+                            else
+                            {
+                                _integralNumberDeserializer.Deserialize(dronNumber, property, deserializedObj);    
+                            }
                             break;
                         case DronIntegralNumber dronNumber:
-                            _integralNumberDeserializer.Deserialize(dronNumber, property, deserializedObj);
+                            if (IntegralNumberDeserializer.IsConvertible(property))
+                            {
+                                _integralNumberDeserializer.Deserialize(dronNumber, property, deserializedObj);    
+                            }
+                            else
+                            {
+                                var code = Type.GetTypeCode(property.GetType());
+                                _floatingNumberDeserializer.Deserialize(dronNumber, property, deserializedObj);
+                            }
                             break;
                         case DronString dronString:
                             _stringDeserializer.Deserialize(dronString, property, deserializedObj);

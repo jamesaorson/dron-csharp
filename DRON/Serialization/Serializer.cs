@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Text;
 using DRON.Parse;
 
 namespace DRON.Serialization
@@ -40,6 +41,38 @@ namespace DRON.Serialization
                 object => _objectSerializer.Serialize(obj),
                 null => _nullSerializer.Serialize(obj),
             };
+        }
+
+        internal static string ToDronSourceString(DronNode node)
+        {
+            var builder = new StringBuilder();
+            switch (node)
+            {
+                case DronBool boolNode:
+                    BoolSerializer.ToDronSourceString(boolNode, builder);
+                    break;
+                case DronObject objNode:
+                    ObjectSerializer.ToDronSourceString(objNode, builder);
+                    break;
+                case DronFloatingNumber floatingNode:
+                    FloatingNumberSerializer.ToDronSourceString(floatingNode, builder);
+                    break;
+                case DronIntegralNumber integralNode:
+                    IntegralNumberSerializer.ToDronSourceString(integralNode, builder);
+                    break;
+                case DronList listNode:
+                    ListSerializer.ToDronSourceString(listNode, builder);
+                    break;
+                case DronNull nullNode:
+                    NullSerializer.ToDronSourceString(nullNode, builder);
+                    break;
+                case DronString stringNode:
+                    StringSerializer.ToDronSourceString(stringNode, builder);
+                    break;
+                default:
+                    throw new Exception($"Unsupported Dron node type {node.GetType().Name}");
+            }
+            return builder.ToString();
         }
         #endregion
 

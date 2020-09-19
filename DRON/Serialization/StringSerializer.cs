@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using DRON.Parse;
 
 namespace DRON.Serialization
@@ -20,6 +21,9 @@ namespace DRON.Serialization
                 Guid guid => guid.ToString(),
                 _ => throw new Exception($"Unsupported string type '{value.GetType().Name}'"),
             };
+        
+        internal static void ToDronSourceString(DronString node, StringBuilder builder)
+            => builder.Append($"\"{node.Value}\"");
         #endregion
 
         #endregion

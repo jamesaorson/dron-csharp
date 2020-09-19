@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using DRON.Parse;
 
 namespace DRON.Serialization
@@ -24,6 +25,9 @@ namespace DRON.Serialization
                 Single or Double or Decimal => true,
                 _ => false,
             };
+        
+        internal static void ToDronSourceString(DronFloatingNumber node, StringBuilder builder)
+            => builder.Append(node.Value);
         #endregion
 
         #endregion

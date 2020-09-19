@@ -43,9 +43,11 @@ namespace DRON
             return Deserializer.Deserialize<T>(node);
         }
 
-        public static DronNode Serialize<T>(T value)
+        public static string Serialize<T>(T value)
             where T : class, new()
-            => Serializer.Serialize<T>(value);
+            => Serializer.ToDronSourceString(
+                Serializer.Serialize<T>(value)
+            );
         #endregion
 
         #endregion

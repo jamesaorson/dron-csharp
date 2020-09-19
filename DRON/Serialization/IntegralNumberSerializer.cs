@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using DRON.Parse;
 
 namespace DRON.Serialization
@@ -33,6 +34,9 @@ namespace DRON.Serialization
                  ) => true,
                 _ => false,
             };
+        
+        internal static void ToDronSourceString(DronIntegralNumber node, StringBuilder builder)
+            => builder.Append(node.Value);
         #endregion
 
         #endregion

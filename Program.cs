@@ -8,7 +8,7 @@ using DRON;
 
 public class Record
 {
-    public Guid Id { get; set; }
+    public Guid? Id { get; set; }
     public int Count { get; set; }
     public string Name { get; set; }
     public IEnumerable<Record> Objects { get; set; }
@@ -30,7 +30,8 @@ class Program
             Name = "name",
             Objects = new List<Record>
             {
-                new Record()
+                new Record(),
+                new Record(),
             },
             Ratio = 0.8,
             IsValid = true,
@@ -47,7 +48,7 @@ class Program
         Console.Write("Json Serialize Sync:  "); RunJsonSerialize();
     }
 
-    private const int TIMES = 1_000;
+    private const int TIMES = 100;
     private const string FILE_PREFIX = "record";
     private const string DRON_FILE = FILE_PREFIX + ".dron";
     private const string JSON_FILE = FILE_PREFIX + ".json";
@@ -56,7 +57,7 @@ class Program
         var stopwatch = Stopwatch.StartNew();
         for (int i = 0; i < TIMES; ++i)
         {
-            var record = Dron.Deserialize<Record>(
+            Dron.Deserialize<Record>(
                 File.ReadAllText(DRON_FILE)
             );
         }
@@ -118,7 +119,7 @@ class Program
         var stopwatch = Stopwatch.StartNew();
         for (int i = 0; i < TIMES; ++i)
         {
-            var record = Dron.Serialize(_record);
+            Dron.Serialize(_record);
         }
         stopwatch.Stop();
         Console.WriteLine(stopwatch.Elapsed);

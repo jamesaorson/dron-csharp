@@ -29,6 +29,20 @@ namespace DRON.Deserialization
             }
             return value;
         }
+
+        internal object Deserialize(
+            DronFloatingNumber node,
+            PropertyInfo property = null,
+            object obj = null,
+            Type typeOverride = null
+        ) => Deserialize(
+            new DronIntegralNumber(
+                Convert.ToInt64(node.Value)
+            ),
+            property,
+            obj,
+            typeOverride
+        );
         #endregion
 
         #region Static Methods
@@ -45,6 +59,22 @@ namespace DRON.Deserialization
                 TypeCode.Int64 => Convert.ToInt64(number),
                 TypeCode.Object => number,
                 _ => throw new Exception($"Unsupported integral numeric type '{number.GetType().Name}"),
+            };
+        
+        internal static bool IsConvertible(PropertyInfo property)
+            => Type.GetTypeCode(property.PropertyType) switch
+            {
+                (
+                    TypeCode.Byte
+                    or TypeCode.SByte
+                    or TypeCode.UInt16
+                    or TypeCode.Int16
+                    or TypeCode.UInt32
+                    or TypeCode.Int32
+                    or TypeCode.UInt64
+                    or TypeCode.Int64
+                ) => true,
+                _ => false,
             };
         #endregion
 

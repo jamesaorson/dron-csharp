@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using DRON.Parse;
 
 namespace DRON.Serialization
@@ -44,6 +45,11 @@ namespace DRON.Serialization
             }
             return fields;
         }       
+        #endregion
+
+        #region Static Methods
+        internal static void ToDronSourceString(DronObject node, StringBuilder builder)
+            => ObjectSerializer.ToDronSourceString(node, builder);
         #endregion
 
         #endregion
