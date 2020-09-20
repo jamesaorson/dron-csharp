@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using DRON.Exceptions;
 using DRON.Parse;
 
 namespace DRON.Deserialization
@@ -57,7 +58,7 @@ namespace DRON.Deserialization
                 TypeCode.Double => Convert.ToDouble(number),
                 TypeCode.Decimal => Convert.ToDecimal(number),
                 TypeCode.Object => number,
-                _ => throw new Exception($"Unsupported floating numeric type '{number.GetType().Name}': {Type.GetTypeCode(numberType)}"),
+                _ => throw new DronUnsupportedFloatingNumberTypeException(number.GetType()),
             };
         
         internal static bool IsConvertible(PropertyInfo property)

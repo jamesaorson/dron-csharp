@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Reflection;
+using DRON.Deserialization.Exceptions;
 using DRON.Parse;
 
 namespace DRON.Deserialization
@@ -41,7 +42,7 @@ namespace DRON.Deserialization
                     var property = GetPropertyInfoByField(field, returnType);
                     if (property is null)
                     {
-                        throw new Exception($"Property {pair.Key} does not exist on type '{returnType.Name}'");
+                        throw new DronPropertyDoesNotExistException(pair.Value, returnType);
                     }
                     switch (field.Value)
                     {
@@ -102,7 +103,7 @@ namespace DRON.Deserialization
                 DronList dronList => _listDeserializer.Deserialize(dronList, property, obj, typeOverride),
                 DronNull dronNull => _nullDeserializer.Deserialize(dronNull, property, obj),
                 DronBool dronBool => _boolDeserializer.Deserialize(dronBool, property, obj),
-                _ => throw new Exception($"Unsupported DronNode '{node.GetType().Name}'"),
+                _ => throw new ArgumentOutOfRangeException($"Unsupported DronNode '{node.GetType().Name}'"),
             };
         #endregion
 

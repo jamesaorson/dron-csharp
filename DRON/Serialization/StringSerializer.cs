@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using DRON.Exceptions;
 using DRON.Parse;
 
 namespace DRON.Serialization
@@ -27,7 +28,7 @@ namespace DRON.Serialization
             {
                 String s => s,
                 Guid guid => guid.ToString(),
-                _ => throw new Exception($"Unsupported string type '{value.GetType().Name}'"),
+                _ => throw new DronUnsupportedStringTypeException(value.GetType()),
             };
         #endregion
 

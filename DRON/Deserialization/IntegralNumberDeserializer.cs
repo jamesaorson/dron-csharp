@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using DRON.Exceptions;
 using DRON.Parse;
 
 namespace DRON.Deserialization
@@ -63,7 +64,7 @@ namespace DRON.Deserialization
                 TypeCode.UInt64 => Convert.ToUInt64(number),
                 TypeCode.Int64 => Convert.ToInt64(number),
                 TypeCode.Object => number,
-                _ => throw new Exception($"Unsupported integral numeric type '{number.GetType().Name}"),
+                _ => throw new DronUnsupportedIntegralNumberTypeException(number.GetType()),
             };
         
         internal static bool IsConvertible(PropertyInfo property)

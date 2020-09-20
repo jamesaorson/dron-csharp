@@ -119,7 +119,7 @@ namespace DRON.Lex
                             case char c when Char.IsWhiteSpace(c):
                                 break;
                             default:
-                                throw new UnexpectedCharacterException(character);
+                                throw new DronUnexpectedCharacterException(character);
                         }
                         break;
                     case States.Identifier:
@@ -184,7 +184,7 @@ namespace DRON.Lex
                     case States.NegativeNumber:
                         if (!Char.IsDigit(character))
                         {
-                            throw new Exception("Expected at least one digit following a negative sign");
+                            throw new DronExpectedDigitAfterNegativeSignException();
                         }
                         _state = States.Number;
                         _preserveLastValue = true;
@@ -192,7 +192,7 @@ namespace DRON.Lex
                     case States.FloatingNumberStart:
                         if (!Char.IsDigit(character))
                         {
-                            throw new Exception("Expected at least one digit following a decimal point");
+                            throw new DronExpectedDigitAfterDecimalPointException();
                         }
                         _state = States.FloatingNumber;
                         _preserveLastValue = true;
@@ -203,14 +203,14 @@ namespace DRON.Lex
                         {
                             if (_state == States.FloatingNumber)
                             {
-                                throw new Exception("Extra decimal found in floating point number");
+                                throw new DronExtraDecimalPointException();
                             }
                             _state = States.FloatingNumberStart;
                             break;
                         }
                         if (Char.IsLetter(character))
                         {
-                            throw new Exception($"Unexpected character in number literal '{character}'");
+                            throw new DronUnexpectedCharacterInNumberLiteralException(character);
                         }
                         if (Char.IsDigit(character))
                         {
@@ -233,7 +233,7 @@ namespace DRON.Lex
             }
             if (_tokenString.Trim().Length != 0)
             {
-                throw new Exception("Garbage");
+                throw new DronTrailingGarbageException(_tokenString.Trim());
             }
             _currentToken = new EndOfFileToken();
             return _currentToken;

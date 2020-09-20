@@ -40,7 +40,7 @@ namespace DRON.Parse
                     Chomp();
                     if (!TryMatch(TokenKind.Identifier))
                     {
-                        throw new UnexpectedTokenException(typeof(DronAttribute), _currentToken);
+                        throw new DronUnexpectedTokenException(typeof(DronAttribute), _currentToken);
                     }
                     string name = (_currentToken as ValueToken).Value;
                     string value = null;
@@ -56,12 +56,12 @@ namespace DRON.Parse
                     }
                     if (!TryMatch(TokenKind.CloseParenthese))
                     {
-                        throw new EOFException(typeof(DronAttribute));
+                        throw new DronUnexpectedEOFException(typeof(DronAttribute));
                     }
                     Chomp();
                     return new DronAttribute(name, value);
                 default:
-                    throw new UnexpectedTokenException(typeof(DronAttribute), _currentToken);
+                    throw new DronUnexpectedTokenException(typeof(DronAttribute), _currentToken);
             }
         }
 
@@ -79,7 +79,7 @@ namespace DRON.Parse
             => _currentToken is null ? null : _currentToken.Kind switch {
                 TokenKind.OpenBrace or TokenKind.OpenParenthese => ParseObject(),
                 TokenKind.OpenBracket => ParseList(),
-                _ => throw new UnexpectedTokenException(typeof(DronNode), _currentToken),
+                _ => throw new DronUnexpectedTokenException(typeof(DronNode), _currentToken),
             };
         
         private DronFalse ParseFalse()
@@ -98,13 +98,13 @@ namespace DRON.Parse
                     Chomp();
                     if (!TryChomp(TokenKind.Colon))
                     {
-                        throw new UnexpectedTokenException(typeof(DronField), _currentToken);
+                        throw new DronUnexpectedTokenException(typeof(DronField), _currentToken);
                     }
                     DronNode value = ParseNode();
                     TryChomp(TokenKind.Comma);
                     return new DronField(attributes, name, value);
                 default:
-                    throw new UnexpectedTokenException(typeof(DronField), _currentToken);
+                    throw new DronUnexpectedTokenException(typeof(DronField), _currentToken);
             }
         }
 
@@ -116,7 +116,7 @@ namespace DRON.Parse
                 var field = ParseField();
                 if (fields.ContainsKey(field.Name))
                 {
-                    throw new DuplicateFieldKeyException(field.Name);
+                    throw new DronDuplicateFieldKeyException(field.Name);
                 }
                 fields[field.Name] = field;
             }
@@ -129,7 +129,7 @@ namespace DRON.Parse
         {
             if (!TryChomp(TokenKind.OpenBracket))
             {
-                throw new UnexpectedTokenException(typeof(DronList), _currentToken);
+                throw new DronUnexpectedTokenException(typeof(DronList), _currentToken);
             }
             var items = new List<DronNode>();
             if (!TryMatch(TokenKind.CloseBracket))
@@ -140,7 +140,7 @@ namespace DRON.Parse
             {
                 if (!TryChomp(TokenKind.Comma))
                 {
-                    throw new UnexpectedTokenException(typeof(DronList), _currentToken);
+                    throw new DronUnexpectedTokenException(typeof(DronList), _currentToken);
                 }
                 if (TryMatch(TokenKind.CloseBracket))
                 {
@@ -154,7 +154,7 @@ namespace DRON.Parse
             }
             if (!TryChomp(TokenKind.CloseBracket))
             {
-                throw new UnexpectedTokenException(typeof(DronList), _currentToken);
+                throw new DronUnexpectedTokenException(typeof(DronList), _currentToken);
             }
             return new DronList(items);
         }
@@ -172,7 +172,7 @@ namespace DRON.Parse
                 TokenKind.Null => ParseNull(),
                 TokenKind.True => ParseTrue(),
                 TokenKind.False => ParseFalse(),
-                _ => throw new UnexpectedTokenException(typeof(DronNode), _currentToken),
+                _ => throw new DronUnexpectedTokenException(typeof(DronNode), _currentToken),
             };
         }
 
@@ -193,7 +193,7 @@ namespace DRON.Parse
                     Chomp();
                     return number;
                 default:
-                    throw new UnexpectedTokenException(typeof(DronFloatingNumber), _currentToken);
+                    throw new DronUnexpectedTokenException(typeof(DronFloatingNumber), _currentToken);
             }
         }
 
@@ -208,7 +208,7 @@ namespace DRON.Parse
                     Chomp();
                     return number;
                 default:
-                    throw new UnexpectedTokenException(typeof(DronIntegralNumber), _currentToken);
+                    throw new DronUnexpectedTokenException(typeof(DronIntegralNumber), _currentToken);
             }
         }
 
@@ -222,11 +222,11 @@ namespace DRON.Parse
                     var fields = ParseFields();
                     if (!TryChomp(TokenKind.CloseBrace))
                     {
-                        throw new EOFException(typeof(DronObject));
+                        throw new DronUnexpectedEOFException(typeof(DronObject));
                     }
                     return new DronObject(attributes, fields);
                 default:
-                    throw new UnexpectedTokenException(typeof(DronObject), _currentToken);
+                    throw new DronUnexpectedTokenException(typeof(DronObject), _currentToken);
             }
         }
 

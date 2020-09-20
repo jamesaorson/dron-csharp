@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using DRON.Deserialization.Exceptions;
 using DRON.Parse;
 
 namespace DRON.Deserialization
@@ -27,7 +28,7 @@ namespace DRON.Deserialization
             var propertyType = typeOverride ?? property.PropertyType;
             if (property is null)
             {
-                throw new Exception("Must provide type guidance to deserialize DronList");
+                throw new DronTypeGuidanceException();
             }
             if (property is not null)
             {
@@ -41,7 +42,7 @@ namespace DRON.Deserialization
                     case Type type when type.IsArray:
                         return DeserializeDronListToArray(dronList, property, propertyType, obj);
                     default:
-                        throw new Exception($"Unsupported IEnumerable '{propertyType.Name}'");
+                        throw new DronUnsupportedIEnumerableTypeException(propertyType);
                 }
             }
             return dronList.Items.Select(item => _deserializer.DeserializeNode(item));

@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using DRON.Exceptions;
 using DRON.Parse;
 
 namespace DRON.Deserialization
@@ -40,7 +41,7 @@ namespace DRON.Deserialization
             {
                 TypeCode.String => value,
                 TypeCode.Object => new Guid(value), // Assume object is a Guid
-                _ => throw new Exception($"Unsupported string type '{stringType.Name}'"),
+                _ => throw new DronUnsupportedStringTypeException(stringType),
             };
         #endregion
 

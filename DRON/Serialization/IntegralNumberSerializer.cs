@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using DRON.Exceptions;
 using DRON.Parse;
 
 namespace DRON.Serialization
@@ -25,7 +26,7 @@ namespace DRON.Serialization
         internal static long ConvertToIntegralNumber(object number)
             => IsConvertible(number)
                 ? Convert.ToInt64(number)
-                : throw new Exception($"Unsupported integral type '{number.GetType().Name}'");
+                : throw new DronUnsupportedIntegralNumberTypeException(number.GetType());
         
         internal static bool IsConvertible(object number)
             => number switch

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using DRON.Deserialization.Exceptions;
 using DRON.Parse;
 
 namespace DRON.Deserialization
@@ -28,7 +29,7 @@ namespace DRON.Deserialization
                 ? typeOverride : property?.PropertyType;
             if (propertyType is null)
             {
-                throw new Exception("Must provide type guidance to deserialize a dictionary");
+                throw new DronTypeGuidanceException();
             }
             var typeArguments = propertyType.GetGenericArguments();
             var keyType = typeArguments[0];

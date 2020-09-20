@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using DRON.Parse;
+using DRON.Serialization.Exceptions;
 
 namespace DRON.Serialization
 {
@@ -38,7 +39,7 @@ namespace DRON.Serialization
                 switch (key)
                 {
                     case not String and not Guid:
-                        throw new Exception($"Dictionary key was unsupported type '{key.GetType().Name}'");
+                        throw new DronUnsupportedDictionaryKeyType(key.GetType());
                 }
                 var fieldName = key as string;
                 var fieldNode = _serializer.Serialize(dict[key]);

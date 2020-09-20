@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using DRON.Deserialization.Exceptions;
 using DRON.Parse;
 
 namespace DRON.Deserialization
@@ -24,7 +25,7 @@ namespace DRON.Deserialization
             var propertyType = typeOverride ?? property?.PropertyType;
             if (propertyType is null)
             {
-                throw new Exception("Must provide type guidance to deserialize a DronObject");
+                throw new DronTypeGuidanceException();
             }
             var deserializedObj = _deserializer.Deserialize(dronObject, propertyType);
             if (obj is not null)

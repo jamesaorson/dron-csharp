@@ -2,9 +2,9 @@ using System;
 
 namespace DRON.Lex.Exceptions
 {
-    public class UnexpectedCharacterException : Exception
+    public class DronUnexpectedCharacterException : Exception
     {        
-        public UnexpectedCharacterException(char character)
+        public DronUnexpectedCharacterException(char character)
             : base($"Unexpected character: '{character}'") {}
     }
 }

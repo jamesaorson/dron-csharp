@@ -3,9 +3,9 @@ using DRON.Tokens;
 
 namespace DRON.Parse.Exceptions
 {
-    internal class UnexpectedTokenException : Exception
+    internal class DronUnexpectedTokenException : Exception
     {
-        internal UnexpectedTokenException(Type dronType, Token badToken)
+        internal DronUnexpectedTokenException(Type dronType, Token badToken)
             : base($"Unexpected token while parsing {dronType.Name}: {badToken.Kind}") {}
     }
 }

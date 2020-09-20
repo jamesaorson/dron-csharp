@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using DRON.Exceptions;
 using DRON.Parse;
 
 namespace DRON.Serialization
@@ -25,7 +26,7 @@ namespace DRON.Serialization
         internal static double ConvertToFloatingNumber(object number)
             => IsConvertible(number)
                 ? Convert.ToDouble(number)
-                : throw new Exception($"Unsupported floating type '{number.GetType().Name}'");
+                : throw new DronUnsupportedFloatingNumberTypeException(number.GetType());
         
         internal static bool IsConvertible(object number)
             => number switch

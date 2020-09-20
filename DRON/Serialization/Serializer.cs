@@ -70,7 +70,7 @@ namespace DRON.Serialization
                     _stringSerializer.ToDronSourceString(stringNode, builder);
                     break;
                 default:
-                    throw new Exception($"Unsupported Dron node type {node.GetType().Name}");
+                    throw new ArgumentOutOfRangeException($"Unsupported DronNode '{node.GetType().Name}'");
             }
             return builder.ToString();
         }
