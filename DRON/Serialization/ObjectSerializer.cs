@@ -33,9 +33,7 @@ namespace DRON.Serialization
                 _serializer._dictSerializer.ConvertDictToFields(fieldsDict)
             );
         }
-        #endregion
 
-        #region Member Methods
         internal void ToDronSourceString(DronObject node, StringBuilder builder)
         {
             builder.Append(OBJECT_START);

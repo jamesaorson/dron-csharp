@@ -10,9 +10,14 @@ namespace DRON.Parse
 
         public DronAttribute(string name, string value)
         {
-            Name = name;
-            Value = value;
+            Name = TrimQuotes(name);
+            Value = TrimQuotes(value);
         }
+        #endregion
+
+        #region Constants
+        public const string ITEM_TYPE = "ItemType";
+        public const string TYPE = "Type";
         #endregion
 
         #region Members

@@ -22,11 +22,24 @@ namespace DRON.Deserialization
             DronObject dronObject,
             PropertyInfo property = null,
             object obj = null,
-            Type typeOverride = null
+            Type typeOverride = null,
+            IReadOnlyList<DronAttribute> additionalAttributes = null
         )
         {
             var propertyType = typeOverride is not null
                 ? typeOverride : property?.PropertyType;
+            IEnumerable<DronAttribute> allAttributes = dronObject.Attributes;
+            if (additionalAttributes is not null)
+            {
+                allAttributes = allAttributes.Concat(additionalAttributes);
+            }
+            var typeAttribute = allAttributes.FirstOrDefault(
+                attribute => attribute.Name == DronAttribute.TYPE
+            );
+            if (typeAttribute is not null)
+            {
+                propertyType = Type.GetType(typeAttribute.Value);
+            }
             if (propertyType is null)
             {
                 throw new DronTypeGuidanceException();

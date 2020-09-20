@@ -14,14 +14,7 @@ namespace DRON.Parse
         )
             : base(attributes)
         {
-            if (name[0] == '"')
-            {
-                name = name.Substring(1);
-                if (name[name.Length - 1] == '"')
-                {
-                    name = name.Substring(0, name.Length - 1);
-                }
-            }
+            name = TrimQuotes(name);
             Name = name;
             Value = value;
         }

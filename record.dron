@@ -4,6 +4,7 @@
     "Ratio": 0.8,
     "Name": "record1",
     "IsValid": true,
+    (ItemType "TestNamespace.Record")
     "Objects": [
         {
             "Id": "0BDE17C2-3C08-46D1-948B-8170360577AC",
@@ -13,6 +14,7 @@
             "IsValid": false
         }
     ],
+    (Type "TestNamespace.Record")
     "Child": {
         "Id": "C17AC2F7-75F5-4BF7-BD6E-7CA2B12E9AE6",
         "Count": 2,

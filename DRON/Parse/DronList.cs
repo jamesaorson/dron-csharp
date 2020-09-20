@@ -2,12 +2,15 @@ using System.Collections.Generic;
 
 namespace DRON.Parse
 {
-    public class DronList : DronNode
+    public class DronList : DronAttributedNode
     {
         #region Public
 
         #region Constructors
-        public DronList(IReadOnlyList<DronNode> items)
+        public DronList(
+            IReadOnlyList<DronAttribute> attributes,
+            IReadOnlyList<DronNode> items
+        ) : base(attributes)
         {
             Items = items;
         }

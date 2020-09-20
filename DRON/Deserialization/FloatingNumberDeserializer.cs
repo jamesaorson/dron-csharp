@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using DRON.Exceptions;
 using DRON.Parse;
@@ -19,7 +20,8 @@ namespace DRON.Deserialization
             DronFloatingNumber node,
             PropertyInfo property = null,
             object obj = null,
-            Type typeOverride = null
+            Type typeOverride = null,
+            IReadOnlyList<DronAttribute> additionalAttributes = null
         )
         {
             var propertyType = typeOverride is not null ? typeOverride : property?.PropertyType;
@@ -39,7 +41,8 @@ namespace DRON.Deserialization
             DronIntegralNumber node,
             PropertyInfo property = null,
             object obj = null,
-            Type typeOverride = null
+            Type typeOverride = null,
+            IReadOnlyList<DronAttribute> additionalAttributes = null
         ) => Deserialize(
             new DronFloatingNumber(
                 Convert.ToDouble(node.Value)

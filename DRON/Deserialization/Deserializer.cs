@@ -32,6 +32,10 @@ namespace DRON.Deserialization
             {
                 return _dictDeserializer.Deserialize(node as DronObject, typeOverride: returnType);
             }
+            if (returnType.IsAbstract)
+            {
+                throw new DronAbstractTypeIsMissingTypeGuidanceException(returnType);
+            }
             object deserializedObj = Activator.CreateInstance(returnType);
             if (node is DronObject obj)
             {
@@ -71,10 +75,10 @@ namespace DRON.Deserialization
                             _stringDeserializer.Deserialize(dronString, property, deserializedObj);
                             break;
                         case DronObject dronObject:
-                            _objectDeserializer.Deserialize(dronObject, property, deserializedObj);
+                            _objectDeserializer.Deserialize(dronObject, property, deserializedObj, additionalAttributes: field.Attributes);
                             break;
                         case DronList dronList:
-                            _listDeserializer.Deserialize(dronList, property, deserializedObj);
+                            _listDeserializer.Deserialize(dronList, property, deserializedObj, additionalAttributes: field.Attributes);
                             break;
                         case DronNull dronNull:
                             _nullDeserializer.Deserialize(dronNull, property, deserializedObj);

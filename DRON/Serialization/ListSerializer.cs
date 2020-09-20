@@ -32,7 +32,10 @@ namespace DRON.Serialization
             {
                 items.Add(_serializer.Serialize(item));
             }
-            return new DronList(items);
+            return new DronList(
+                new List<DronAttribute>(),
+                items
+            );
         }
 
         internal void ToDronSourceString(DronList node, StringBuilder builder)

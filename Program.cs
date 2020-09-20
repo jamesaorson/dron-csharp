@@ -5,17 +5,25 @@ using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
 using DRON;
+using TestNamespace;
 
-public class Record
+namespace TestNamespace
 {
-    public Guid? Id { get; set; }
-    public int Count { get; set; }
-    public string Name { get; set; }
-    public IEnumerable<Record> Objects { get; set; }
-    public double Ratio { get; set; }
-    public bool IsValid { get; set; }
-    public Record Child { get; set; }
-    public Dictionary<string, string> EmptyDict { get; set; }
+    public abstract class AbstractRecord
+    {
+        public Guid? Id { get; set; }
+        public int Count { get; set; }
+        public string Name { get; set; }
+        public IEnumerable<AbstractRecord> Objects { get; set; }
+        public double Ratio { get; set; }
+        public bool IsValid { get; set; }
+        public AbstractRecord Child { get; set; }
+    }
+
+    public class Record : AbstractRecord
+    {
+        public Dictionary<string, string> EmptyDict { get; set; }
+    }
 }
 
 class Program
@@ -38,17 +46,17 @@ class Program
             Child = new Record(),
         };
         Console.Write("Dron Deserialize Sync:  "); RunDeserialize();
-        Console.Write("Json Deserialize Sync:  "); RunJsonDeserialize();
-        Console.WriteLine();
-        Console.Write("Dron Deserialize Async: "); RunAsyncDeserialize();
-        Console.Write("Json Deserialize Async: "); RunJsonAsyncDeserialize();
+        // Console.Write("Json Deserialize Sync:  "); RunJsonDeserialize();
+        // Console.WriteLine();
+        // Console.Write("Dron Deserialize Async: "); RunAsyncDeserialize();
+        // Console.Write("Json Deserialize Async: "); RunJsonAsyncDeserialize();
 
         Console.WriteLine();
         Console.Write("Dron Serialize Sync:  "); RunSerialize();
-        Console.Write("Json Serialize Sync:  "); RunJsonSerialize();
+        // Console.Write("Json Serialize Sync:  "); RunJsonSerialize();
     }
 
-    private const int TIMES = 100;
+    private const int TIMES = 1;
     private const string FILE_PREFIX = "record";
     private const string DRON_FILE = FILE_PREFIX + ".dron";
     private const string JSON_FILE = FILE_PREFIX + ".json";

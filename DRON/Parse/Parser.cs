@@ -127,6 +127,7 @@ namespace DRON.Parse
         
         private DronList ParseList()
         {
+            var attributes = ParseAttributes();
             if (!TryChomp(TokenKind.OpenBracket))
             {
                 throw new DronUnexpectedTokenException(typeof(DronList), _currentToken);
@@ -156,7 +157,7 @@ namespace DRON.Parse
             {
                 throw new DronUnexpectedTokenException(typeof(DronList), _currentToken);
             }
-            return new DronList(items);
+            return new DronList(attributes, items);
         }
 
         private DronNode ParseNode()

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using DRON.Parse;
 
@@ -14,7 +15,8 @@ namespace DRON.Deserialization
             T dronValue,
             PropertyInfo property = null,
             object obj = null,
-            Type typeOverride = null
+            Type typeOverride = null,
+            IReadOnlyList<DronAttribute> additionalAttributes = null
         );
         #endregion
 
