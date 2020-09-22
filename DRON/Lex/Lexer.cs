@@ -127,6 +127,7 @@ namespace DRON.Lex
                             Char.IsWhiteSpace(character)
                             || (
                                 character != Alphabet.Underscore
+                                && character != Alphabet.Decimal
                                 && !Char.IsLetterOrDigit(character)
                             )
                         )
